@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" class="light" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 &mdash; Page Not Found &bull; BAGEL BAKERY &amp; SHOP</title>
+  
+  <!-- Favicon: Compact Artisan Bagel Emblem -->
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Fraunces & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,600&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6.5.1 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bagel: {
+              gold: '#F59E0B',
+              honey: '#FBBF24',
+              amber: '#D97706',
+              crust: '#B45309',
+              darkCrust: '#78350F',
+              molasses: '#451A03',
+              dough: '#FAF6F0',
+              cream: '#F4ECE0',
+              wheat: '#FDE68A',
+              warmDark: '#0C0704',
+              warmCardDark: '#160F0A',
+              warmSurfaceDark: '#221710',
+              borderDark: 'rgba(245, 158, 11, 0.18)'
+            }
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'serif'],
+            outfit: ['Outfit', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Official Framer Motion Browser Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@11.11.17/dist/motion.js"></script>
+
+  <style>
+    /* Global Resets */
+    * {
+      box-sizing: border-box !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: clip;
+    }
+
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: clip !important;
+      width: 100% !important;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Bakery Texture */
+    .bg-bakery-ambient {
+      background-size: 32px 32px;
+      background-image: radial-gradient(circle, rgba(217, 119, 6, 0.08) 1.2px, transparent 1.2px);
+    }
+    .dark .bg-bakery-ambient {
+      background-image: radial-gradient(circle, rgba(245, 158, 11, 0.07) 1.2px, transparent 1.2px);
+    }
+
+    /* 3D Tactile Buttons */
+    .btn-3d {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn-3d-bakery {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 60%, #B45309 100%);
+      color: #FFFFFF;
+      box-shadow: 
+        0 4px 0 #92400E,
+        0 6px 12px rgba(180, 83, 9, 0.35);
+      border: 1px solid rgba(254, 243, 199, 0.3);
+    }
+    .btn-3d-bakery:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 
+        0 5px 0 #92400E,
+        0 8px 16px rgba(180, 83, 9, 0.45);
+    }
+    .btn-3d-bakery:active {
+      transform: translateY(3px);
+      box-shadow: 
+        0 1px 0 #92400E,
+        0 2px 4px rgba(180, 83, 9, 0.3);
+    }
+    .btn-3d-switch {
+      background: #FAF6F0;
+      color: #78350F;
+      box-shadow: 
+        0 2.5px 0 #D1C2A5,
+        0 4px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid #E5D5BA;
+    }
+    .btn-3d-switch:hover {
+      background: #F5EBE1;
+      transform: translateY(-1px);
+      box-shadow: 
+        0 3.5px 0 #D1C2A5,
+        0 6px 12px rgba(0, 0, 0, 0.09);
+    }
+    .btn-3d-switch:active {
+      transform: translateY(2px);
+      box-shadow: 
+        0 1px 0 #D1C2A5,
+        0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .dark .btn-3d-switch {
+      background: #1C120B;
+      color: #FCD34D;
+      box-shadow: 
+        0 2.5px 0 #0A0503,
+        0 4px 8px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .dark .btn-3d-switch:hover {
+      background: #251810;
+      box-shadow: 
+        0 3.5px 0 #0A0503,
+        0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+    .dark .btn-3d-switch:active {
+      transform: translateY(2px);
+      box-shadow: 
+        0 1px 0 #0A0503,
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Floating Bagel Animation */
+    @keyframes bobBagel {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-12px) rotate(4deg);
+      }
+    }
+    .animate-bob {
+      animation: bobBagel 4s ease-in-out infinite;
+    }
+
+    /* Steam Animation */
+    @keyframes riseSteam {
+      0% { transform: translateY(0) scaleX(1); opacity: 0; }
+      30% { opacity: 0.8; }
+      80% { transform: translateY(-10px) scaleX(1.2); opacity: 0.3; }
+      100% { transform: translateY(-16px) scaleX(1.4); opacity: 0; }
+    }
+    .animate-steam {
+      animation: riseSteam 2.5s ease-out infinite;
+    }
+  </style>
+
+  
+
+
+  <!-- ========================================================================
+       MASTER MOBILE-FIRST RESPONSIVE STYLESHEET
+       Explicit Breakpoints: 320px, 480px, 768px, 1024px, >1024px
+       Zero horizontal overflow, fluid typography, responsive grids & tactile CTAs
+       ======================================================================== -->
+  <style id="masterResponsiveStyles">
+    /* Universal Box-Sizing & Reset */
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Screen Width Locking & Overflow Prevention */
+    html {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      position: relative;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Strict Structural Containment */
+    main, section, header, footer, article, nav, aside {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: clip !important;
+    }
+
+    /* Images & Media Fluid Sizing: Max-Width 100% */
+    img, video, canvas, audio, iframe {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    /* Typography & Text Containment: Never Overflow Screen */
+    p, span, h1, h2, h3, h4, h5, h6, a, label, li, blockquote, dt, dd {
+      overflow-wrap: break-word !important;
+      word-wrap: break-word !important;
+      word-break: normal;
+    }
+
+    /* Sticky Header Pinned at Top */
+    #mainHeader {
+      position: -webkit-sticky !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 50 !important;
+      width: 100% !important;
+    }
+
+    /* Ambient Glow Element Width Containment */
+    .w-96.h-96, .w-80.h-80 {
+      max-width: 90vw !important;
+      max-height: 90vw !important;
+    }
+
+    /* ========================================================================
+       BREAKPOINT 1: ULTRA-COMPACT MOBILE (<= 320px)
+       ======================================================================== */
+    @media (max-width: 320px) {
+      html {
+        font-size: 13px !important;
+      }
+      #brandLogo span.font-outfit {
+        display: none !important;
+      }
+      #brandLogo .font-serif {
+        font-size: 10px !important;
+      }
+      .px-3, .px-4, .px-6, .px-8, .p-4, .p-5, .p-6, .p-8 {
+        padding-left: 0.65rem !important;
+        padding-right: 0.65rem !important;
+      }
+      .gap-3, .gap-4, .gap-6, .gap-8 {
+        gap: 0.65rem !important;
+      }
+      section {
+        padding-top: 2.75rem !important;
+        padding-bottom: 2.75rem !important;
+      }
+      .btn-3d {
+        font-size: 10px !important;
+        padding-top: 0.6rem !important;
+        padding-bottom: 0.6rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+      #mobileDrawer {
+        width: 92vw !important;
+        max-width: 290px !important;
+      }
+    }
+
+    /* ========================================================================
+       BREAKPOINT 2: STANDARD MOBILE SMARTPHONES (<= 480px)
+       ======================================================================== */
+    @media (max-width: 480px) {
+      /* Fluid Headings */
+      h1, .text-4xl, .text-5xl, .text-6xl, .text-7xl {
+        font-size: clamp(1.5rem, 6.8vw, 2.15rem) !important;
+        line-height: 1.18 !important;
+        letter-spacing: -0.02em !important;
+      }
+      h2, .text-3xl {
+        font-size: clamp(1.25rem, 5vw, 1.7rem) !important;
+        line-height: 1.22 !important;
+      }
+      h3, .text-2xl {
+        font-size: clamp(1.1rem, 4vw, 1.35rem) !important;
+        line-height: 1.25 !important;
+      }
+      h4, .text-xl {
+        font-size: clamp(0.95rem, 3.5vw, 1.15rem) !important;
+      }
+
+      /* 404 Large Display Graphic */
+      .font-serif.font-black.text-7xl,
+      .font-serif.font-black.text-8xl,
+      .font-serif.font-black.text-9xl {
+        font-size: clamp(3rem, 15vw, 4.5rem) !important;
+        line-height: 1 !important;
+      }
+
+      /* Equal Section Cadence Across Entire Website */
+      section {
+        padding-top: 3.25rem !important;
+        padding-bottom: 3.25rem !important;
+      }
+
+      /* Safe Horizontal Padding (Zero Edge Bleed) */
+      .px-4, .px-6, .px-8, .p-6, .p-8, .p-10, .p-12 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
+      .py-12, .py-16, .py-20, .py-24 {
+        padding-top: 3.25rem !important;
+        padding-bottom: 3.25rem !important;
+      }
+
+      /* Grid Auto-Stacking into 1 Column on Mobile */
+      .grid.grid-cols-2:not(.grid-mobile-keep),
+      .grid.grid-cols-3:not(.grid-mobile-keep),
+      .grid.grid-cols-4:not(.grid-mobile-keep),
+      .grid.grid-cols-5:not(.grid-mobile-keep) {
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+
+      /* Buttons Fit Mobile Screens Cleanly */
+      .btn-3d:not(.btn-3d-switch):not(.btn-3d-hamburger) {
+        width: 100% !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        text-align: center !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
+
+      /* Modal Sizing on Mobile */
+      #bookingModalContent {
+        width: calc(100% - 1.5rem) !important;
+        max-width: calc(100% - 1.5rem) !important;
+        padding: 1.25rem !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+      }
+
+      /* Mobile Drawer Width */
+      #mobileDrawer {
+        width: 84vw !important;
+        max-width: 300px !important;
+      }
+
+      /* Navbar Mobile Padding */
+      #mainHeader {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        padding-top: 0.5rem !important;
+      }
+      #mainNavbar {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+        border-radius: 1.25rem !important;
+      }
+    }
+
+    /* ========================================================================
+       BREAKPOINT 3: TABLETS & MOBILE LANDSCAPE (481px - 768px)
+       ======================================================================== */
+    @media (min-width: 481px) and (max-width: 768px) {
+      h1, .text-5xl, .text-6xl, .text-7xl {
+        font-size: clamp(1.9rem, 5vw, 2.75rem) !important;
+        line-height: 1.15 !important;
+      }
+      h2, .text-3xl, .text-4xl {
+        font-size: clamp(1.5rem, 3.8vw, 2.1rem) !important;
+        line-height: 1.2 !important;
+      }
+      section {
+        padding-top: 4.25rem !important;
+        padding-bottom: 4.25rem !important;
+      }
+      .grid.grid-cols-3, .grid.grid-cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+      .px-4, .px-6, .px-8, .p-6, .p-8 {
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+      }
+    }
+
+    /* ========================================================================
+       BREAKPOINT 4: TABLET PRO & SMALL DESKTOPS (769px - 1024px)
+       ======================================================================== */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      section {
+        padding-top: 5rem !important;
+        padding-bottom: 5rem !important;
+      }
+      .px-4, .px-6, .px-8, .p-6, .p-8 {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+      }
+    }
+
+    /* ========================================================================
+       DESKTOP VIEW (> 1024px)
+       ======================================================================== */
+    @media (min-width: 1025px) {
+      section {
+        padding-top: 5.5rem !important;
+        padding-bottom: 5.5rem !important;
+      }
+    }
+
+    /* RTL Layout Alignment */
+    [dir="rtl"] #mobileDrawer {
+      left: 0 !important;
+      right: auto !important;
+    }
+    [dir="rtl"] .fa-arrow-right {
+      transform: scaleX(-1);
+    }
+    [dir="rtl"] .fa-angle-right {
+      transform: scaleX(-1);
+    }
+  </style>
+
+</head>
+
+<body class="bg-bagel-dough dark:bg-bagel-warmDark text-stone-800 dark:text-stone-100 bg-bakery-ambient min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-white relative">
+
+  <!-- ========================================================================
+       TOP-RIGHT FLOATING CONTROLS: DARK MODE & RTL BUTTONS
+       Clean, accessible, tactile 3D switches positioned at the right top
+       ======================================================================== -->
+  <div class="fixed top-4 right-4 sm:top-6 sm:right-6 rtl:right-auto rtl:left-4 sm:rtl:left-6 z-50 flex items-center gap-2 sm:gap-2.5">
+    
+    <!-- Quick Home Navigation Pill -->
+    <a href="index.html" class="btn-3d btn-3d-switch px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-md" title="Back to Bakery Home">
+      <i class="fa-solid fa-store text-amber-600 dark:text-amber-400 text-xs"></i>
+      <span class="hidden sm:inline font-outfit">Home</span>
+    </a>
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="themeToggleBtn" onclick="toggleTheme()" class="btn-3d btn-3d-switch w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs shadow-md transition-transform" title="Toggle Dark/Light Mode" aria-label="Toggle Dark Mode">
+      <i id="themeToggleIcon" class="fa-solid fa-sun text-amber-500 text-sm"></i>
+    </button>
+
+    <!-- RTL Direction Toggle Button -->
+    <button id="rtlToggleBtn" onclick="toggleRTL()" class="btn-3d btn-3d-switch w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs shadow-md transition-transform" title="Toggle Left-to-Right / Right-to-Left Layout" aria-label="Toggle RTL Direction">
+      <i class="fa-solid fa-right-left text-amber-600 dark:text-amber-400 text-xs"></i>
+    </button>
+  </div>
+
+
+  <!-- ========================================================================
+       MAIN 404 CONTENT CONTAINER
+       Creative Artisan Bagel Themed Error Experience
+       ======================================================================== -->
+  <main class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative">
+    
+    <!-- Atmospheric Ambient Glow Orbs -->
+    <div class="absolute top-1/4 left-1/4 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-amber-500/10 dark:bg-amber-500/10 blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-orange-500/10 dark:bg-amber-600/10 blur-3xl pointer-events-none"></div>
+
+    <div id="motionCard" class="relative z-10 max-w-2xl w-full mx-auto text-center space-y-8 bg-white/80 dark:bg-bagel-warmCardDark/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 lg:p-12 border border-amber-200/80 dark:border-amber-900/60 shadow-2xl shadow-amber-950/10">
+      
+      <!-- Brand Crest & Header Lockup -->
+      <a href="index.html" class="inline-flex items-center gap-2 text-stone-900 dark:text-amber-100 hover:opacity-90 transition-opacity">
+        <div class="relative w-8 h-8 rounded-full bg-gradient-to-b from-amber-400 via-amber-600 to-amber-800 p-0.5 shadow-sm">
+          <div class="w-full h-full bg-[#1C120B] rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-bread-slice text-amber-400 text-xs"></i>
+          </div>
+        </div>
+        <div class="text-left rtl:text-right">
+          <span class="font-serif font-black text-sm tracking-tight block leading-tight">BAGEL BAKERY &amp; SHOP</span>
+          <span class="text-[8.5px] font-bold text-amber-600 dark:text-amber-400 tracking-wider uppercase font-outfit">Stone-Baked Artisan Bakehouse</span>
+        </div>
+      </a>
+
+      <!-- Big Creative 404 Graphical Element: The Steaming Floating Bagel as the "0" -->
+      <div id="motion404Graphic" class="flex items-center justify-center gap-2 sm:gap-4 my-2 select-none">
+        
+        <!-- Digit "4" -->
+        <span class="font-serif font-black text-7xl sm:text-9xl text-stone-900 dark:text-stone-100 tracking-tighter drop-shadow-sm">
+          4
+        </span>
+
+        <!-- Digit "0": Animated Steaming Artisan Bagel SVG -->
+        <div class="relative w-24 h-24 sm:w-36 sm:h-36 shrink-0 animate-bob">
+          <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xl" fill="none">
+            <!-- Rising Steam -->
+            <path d="M46 16 Q43 9 47 4" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" class="animate-steam opacity-80" />
+            <path d="M54 16 Q57 9 53 4" stroke="#FBBF24" stroke-width="2.5" stroke-linecap="round" class="animate-steam opacity-80" style="animation-delay: 0.7s;" />
+
+            <!-- Bagel Shading Gradients -->
+            <defs>
+              <radialGradient id="bagelCrust404" cx="40%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#FCD34D" />
+                <stop offset="45%" stop-color="#F59E0B" />
+                <stop offset="85%" stop-color="#B45309" />
+                <stop offset="100%" stop-color="#78350F" />
+              </radialGradient>
+              <radialGradient id="holeDepth404" cx="45%" cy="40%" r="55%">
+                <stop offset="0%" stop-color="#26160B" />
+                <stop offset="100%" stop-color="#0C0704" />
+              </radialGradient>
+            </defs>
+
+            <!-- Bagel Outer Ring Crust -->
+            <circle cx="50" cy="54" r="38" fill="url(#bagelCrust404)" stroke="#FDE68A" stroke-width="1.8" />
+            
+            <!-- Golden Crisp Blister Highlights -->
+            <path d="M22 40 C30 26 70 26 78 40" stroke="#FFFDF7" stroke-width="2.8" stroke-linecap="round" opacity="0.5" />
+            <path d="M20 54 C20 70 34 84 50 84 C66 84 80 70 80 54" stroke="#92400E" stroke-width="2.2" opacity="0.3" />
+
+            <!-- The Bagel Hole (With Perspective Shadow) -->
+            <ellipse cx="50" cy="54" rx="14" ry="13.5" fill="url(#holeDepth404)" stroke="#78350F" stroke-width="2" />
+            <ellipse cx="50" cy="54" rx="10" ry="9.5" fill="#120A05" />
+
+            <!-- Toasted Sesame & Everything Seeds -->
+            <ellipse cx="36" cy="38" rx="2.5" ry="1.4" transform="rotate(-30 36 38)" fill="#FFFDF7" />
+            <ellipse cx="52" cy="32" rx="2.5" ry="1.4" transform="rotate(15 52 32)" fill="#FFFDF7" />
+            <ellipse cx="66" cy="38" rx="2.5" ry="1.4" transform="rotate(40 66 38)" fill="#FFFDF7" />
+            <ellipse cx="38" cy="70" rx="2.5" ry="1.4" transform="rotate(25 38 70)" fill="#FFFDF7" />
+            <ellipse cx="62" cy="70" rx="2.5" ry="1.4" transform="rotate(-25 62 70)" fill="#FFFDF7" />
+            <ellipse cx="26" cy="54" rx="2.2" ry="1.2" transform="rotate(80 26 54)" fill="#FFFDF7" />
+            <ellipse cx="74" cy="54" rx="2.2" ry="1.2" transform="rotate(-80 74 54)" fill="#FFFDF7" />
+
+            <!-- Dark Poppy Seed Specks -->
+            <circle cx="44" cy="40" r="1.3" fill="#2E180C" />
+            <circle cx="58" cy="38" r="1.3" fill="#2E180C" />
+            <circle cx="34" cy="48" r="1.3" fill="#2E180C" />
+            <circle cx="66" cy="48" r="1.3" fill="#2E180C" />
+            <circle cx="50" cy="74" r="1.3" fill="#2E180C" />
+          </svg>
+        </div>
+
+        <!-- Digit "4" -->
+        <span class="font-serif font-black text-7xl sm:text-9xl text-stone-900 dark:text-stone-100 tracking-tighter drop-shadow-sm">
+          4
+        </span>
+
+      </div>
+
+      <!-- Playful Bakery Messaging -->
+      <div id="motionText" class="space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-amber-300 font-outfit font-extrabold text-xs uppercase tracking-wider">
+          <i class="fa-solid fa-triangle-exclamation text-amber-600 dark:text-amber-400"></i>
+          Recipe Not Found
+        </div>
+
+        <h2 class="font-serif font-black text-2xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-tight leading-tight">
+          Hole-y Moly! This Page Rolled Away.
+        </h2>
+
+        <p class="text-sm sm:text-base text-stone-600 dark:text-stone-300 font-sans max-w-lg mx-auto leading-relaxed">
+          Looks like this crumb slipped off the baker's peel or got over-boiled in the kettle. The page you are looking for has been moved, eaten, or never existed in our hearth.
+        </p>
+      </div>
+
+      <!-- Interactive Quick Search Bar -->
+      <div id="motionSearch" class="max-w-md mx-auto pt-1">
+        <form onsubmit="handleSearch(event)" class="relative flex items-center">
+          <input 
+            id="searchInput"
+            type="text" 
+            placeholder="Search our menu (e.g., Everything Bagel, Lox, Coffee)..." 
+            class="w-full pl-11 pr-24 rtl:pl-24 rtl:pr-11 py-3 rounded-full bg-stone-50 dark:bg-stone-900 border border-amber-200 dark:border-stone-800 text-xs font-sans text-stone-800 dark:text-stone-100 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all shadow-inner"
+          />
+          <i class="fa-solid fa-magnifying-glass absolute left-4 rtl:left-auto rtl:right-4 text-stone-400 text-xs pointer-events-none"></i>
+          <button 
+            type="submit" 
+            class="btn-3d btn-3d-bakery absolute right-1.5 rtl:right-auto rtl:left-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider"
+          >
+            Search
+          </button>
+        </form>
+      </div>
+
+      <!-- Primary Action Buttons -->
+      <div id="motionButtons" class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a href="index.html" class="btn-3d btn-3d-bakery px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+          <i class="fa-solid fa-house text-xs"></i>
+          <span>Return Home</span>
+        </a>
+
+        <a href="menu.html" class="btn-3d btn-3d-switch px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 text-stone-700 dark:text-stone-300">
+          <i class="fa-solid fa-utensils text-amber-500 text-xs"></i>
+          <span>Explore Menu</span>
+        </a>
+
+        <a href="contact.html" class="btn-3d btn-3d-switch px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 text-stone-700 dark:text-stone-300">
+          <i class="fa-solid fa-phone text-amber-500 text-xs"></i>
+          <span>Contact Bakery</span>
+        </a>
+      </div>
+
+      <!-- Popular Shortcuts Pill Grid -->
+      <div class="pt-6 border-t border-stone-200/80 dark:border-stone-800/80">
+        <span class="text-[11px] font-outfit uppercase tracking-wider text-stone-500 dark:text-stone-400 font-extrabold block mb-3">
+          Popular Destinations While You're Here
+        </span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 text-xs font-outfit">
+          <a href="menu.html#classic-bagels" class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 hover:border-amber-400 transition-colors text-stone-700 dark:text-stone-300 hover:text-amber-600 block">
+            <i class="fa-solid fa-bread-slice text-amber-500 block mb-1"></i>
+            Classic Bagels
+          </a>
+          <a href="catering.html" class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 hover:border-amber-400 transition-colors text-stone-700 dark:text-stone-300 hover:text-amber-600 block">
+            <i class="fa-solid fa-box-open text-amber-500 block mb-1"></i>
+            Catering Boxes
+          </a>
+          <a href="gallery.html" class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 hover:border-amber-400 transition-colors text-stone-700 dark:text-stone-300 hover:text-amber-600 block">
+            <i class="fa-solid fa-camera text-amber-500 block mb-1"></i>
+            Bakery Gallery
+          </a>
+          <a href="visit-us.html" class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 hover:border-amber-400 transition-colors text-stone-700 dark:text-stone-300 hover:text-amber-600 block">
+            <i class="fa-solid fa-location-dot text-amber-500 block mb-1"></i>
+            Hours &amp; Location
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Front Counter Assistance Chip -->
+      <div class="pt-2 text-xs text-stone-500 dark:text-stone-400 font-sans flex items-center justify-center gap-2">
+        <i class="fa-solid fa-headset text-amber-500"></i>
+        <span>Need urgent orders? Call counter: <strong class="text-stone-800 dark:text-stone-200 font-outfit">(555) 234-5678</strong></span>
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ========================================================================
+       MINIMAL BOTTOM SIGNATURE (NOT A FULL FOOTER)
+       ======================================================================== -->
+  <aside class="py-4 text-center text-xs text-stone-500 dark:text-stone-500 font-outfit relative z-10">
+    &copy; 2026 BAGEL BAKERY &amp; SHOP &bull; Hand-Crafted Stone Hearth Artisan
+  </aside>
+
+
+  <!-- ========================================================================
+       PREFERENCES & ANIMATION SCRIPT
+       Theme Toggle (Dark/Light), RTL Toggle & Framer Motion Entrance
+       ======================================================================== -->
+  <script>
+    const htmlElem = document.documentElement;
+    const themeIcon = document.getElementById('themeToggleIcon');
+
+    // 1. Initial State from LocalStorage
+    let isDarkMode = localStorage.getItem('bagel_theme') === 'dark';
+    let isRTL = localStorage.getItem('bagel_rtl') === 'true';
+
+    function applyTheme(dark) {
+      isDarkMode = dark;
+      if (dark) {
+        htmlElem.classList.add('dark');
+        htmlElem.classList.remove('light');
+        if (themeIcon) themeIcon.className = 'fa-solid fa-moon text-amber-300 text-sm';
+        localStorage.setItem('bagel_theme', 'dark');
+      } else {
+        htmlElem.classList.remove('dark');
+        htmlElem.classList.add('light');
+        if (themeIcon) themeIcon.className = 'fa-solid fa-sun text-amber-500 text-sm';
+        localStorage.setItem('bagel_theme', 'light');
+      }
+    }
+
+    function toggleTheme() {
+      applyTheme(!isDarkMode);
+    }
+
+    function applyRTL(rtl) {
+      isRTL = rtl;
+      if (rtl) {
+        htmlElem.setAttribute('dir', 'rtl');
+        localStorage.setItem('bagel_rtl', 'true');
+      } else {
+        htmlElem.setAttribute('dir', 'ltr');
+        localStorage.setItem('bagel_rtl', 'false');
+      }
+    }
+
+    function toggleRTL() {
+      applyRTL(!isRTL);
+    }
+
+    // Apply stored preferences on load
+    applyTheme(isDarkMode);
+    applyRTL(isRTL);
+
+    // 2. Search Redirect Handler
+    function handleSearch(e) {
+      e.preventDefault();
+      const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        window.location.href = 'menu.html?search=' + encodeURIComponent(query);
+      } else {
+        window.location.href = 'menu.html';
+      }
+    }
+
+    // 3. Framer Motion Entrance Physics
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.Motion && window.Motion.animate) {
+        const { animate } = window.Motion;
+
+        // Card Pop-in with overshooting bounce
+        animate('#motionCard', 
+          { opacity: [0, 1], scale: [0.92, 1], y: [20, 0] }, 
+          { duration: 0.8, type: 'spring', stiffness: 120, damping: 14 }
+        );
+
+        // 404 Bagel Graphic Pop
+        animate('#motion404Graphic', 
+          { scale: [0.8, 1], rotate: [-4, 0] }, 
+          { duration: 0.9, delay: 0.15, type: 'spring', stiffness: 140, damping: 12 }
+        );
+
+        // Text Cascade
+        animate('#motionText', 
+          { opacity: [0, 1], y: [15, 0] }, 
+          { duration: 0.7, delay: 0.25, type: 'spring', stiffness: 110, damping: 15 }
+        );
+
+        // Buttons Stagger
+        animate('#motionButtons a', 
+          { opacity: [0, 1], y: [12, 0] }, 
+          { duration: 0.6, delay: (i) => 0.35 + (i * 0.1), type: 'spring', stiffness: 130, damping: 13 }
+        );
+      }
+    });
+  </script>
+
+</body>
+</html>
