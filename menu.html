@@ -595,17 +595,36 @@
        Zero horizontal overflow, fluid typography, responsive grids & tactile CTAs
        ======================================================================== -->
   <style id="masterResponsiveStyles">
+    /* Utility: Cross-Browser Hide Scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+
+    /* Map Frame Iframe Lock */
+    .map-frame-wrapper iframe {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 320px !important;
+      display: block !important;
+    }
+
     /* Universal Box-Sizing & Reset */
     *, *::before, *::after {
       box-sizing: border-box !important;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Screen Width Locking & Overflow Prevention */
+    /* Screen Width Locking & Overflow Prevention (Sticky-Safe) */
     html {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: hidden !important;
+      overflow-x: clip !important;
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
     }
@@ -613,7 +632,8 @@
     body {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: hidden !important;
+      overflow-x: clip !important;
+      overflow-y: visible !important;
       position: relative;
       margin: 0;
       padding: 0;
@@ -622,18 +642,22 @@
       flex-direction: column;
     }
 
-    /* Strict Structural Containment */
-    main, section, header, footer, article, nav, aside {
+    /* Strict Structural Containment (Excludes Header and Nav to guarantee Sticky & Dropdowns) */
+    main, section, footer, article, aside {
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
       overflow-x: clip !important;
+      overflow-x: hidden !important;
     }
 
     /* Images & Media Fluid Sizing: Max-Width 100% */
-    img, video, canvas, audio, iframe {
+    img, video, canvas, audio {
       max-width: 100% !important;
       height: auto !important;
+    }
+    iframe {
+      max-width: 100% !important;
     }
 
     /* Typography & Text Containment: Never Overflow Screen */
@@ -1337,11 +1361,11 @@
          STICKY SUB-NAVIGATION & DIETARY FILTER CONTROLS BAR
          Quick Jump to 7 Sections & Live Real-Time Category Filtering
          ====================================================================== -->
-    <div id="menuQuickNav" class="sticky top-[68px] z-40 w-full bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-y border-amber-200/80 dark:border-amber-900/50 shadow-sm transition-all duration-300">
+    <div id="menuQuickNav" class="sticky top-[52px] sm:top-[60px] lg:top-[68px] z-40 w-full bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-y border-amber-200/80 dark:border-amber-900/50 shadow-sm transition-all duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
         
         <!-- Section Jump Anchors (Horizontal Scrollable Pills) -->
-        <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none text-xs font-outfit font-bold">
+        <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 no-scrollbar text-xs font-outfit font-bold">
           <a href="#classic-bagels" class="menu-nav-pill px-3 py-1.5 rounded-full bg-amber-500 text-white shadow-sm hover:bg-amber-600 transition-all shrink-0">
             <i class="fa-solid fa-bread-slice text-[10px] mr-1"></i> Classic Bagels
           </a>
@@ -1366,7 +1390,7 @@
         </div>
 
         <!-- Interactive Dietary Tag Filter Pills -->
-        <div class="flex items-center gap-1.5 shrink-0 w-full md:w-auto justify-end overflow-x-auto text-[11px] font-outfit">
+        <div class="flex items-center gap-1.5 shrink-0 w-full md:w-auto justify-start md:justify-end overflow-x-auto no-scrollbar text-[11px] font-outfit pt-1 md:pt-0">
           <span class="text-stone-400 dark:text-stone-500 font-bold uppercase tracking-wider text-[10px] mr-1 shrink-0">Filter:</span>
           <button onclick="filterMenu('all', this)" class="diet-filter-btn active px-2.5 py-1 rounded-lg bg-amber-500 text-white font-bold transition-all shadow-sm">All</button>
           <button onclick="filterMenu('vegetarian', this)" class="diet-filter-btn px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-semibold hover:bg-amber-100 dark:hover:bg-amber-950/40 transition-all">Vegetarian</button>
@@ -1383,7 +1407,7 @@
          Features Plain Bagel, Sesame Bagel, Poppy Seed Bagel, Everything Bagel,
          and Cinnamon Raisin Bagel with baker's tasting notes & seed density profile
          ====================================================================== -->
-    <section id="classic-bagels" class="py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
+    <section id="classic-bagels" class="scroll-mt-32 sm:scroll-mt-36 py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
       
       <!-- Ambient Decorative Glow -->
       <div class="absolute top-10 left-10 w-96 h-96 bg-amber-500/10 dark:bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -1548,7 +1572,7 @@
          Features Cheese Bagel, Garlic Herb Bagel, Jalape&ntilde;o Bagel, Onion Bagel,
          and Multigrain Bagel with heat index, cheese crust and savory profiles
          ====================================================================== -->
-    <section id="savory-bagels" class="py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-bagel-warmCardDark">
+    <section id="savory-bagels" class="scroll-mt-32 sm:scroll-mt-36 py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-bagel-warmCardDark">
       
       <!-- Subtle Decorative Line -->
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -1711,7 +1735,7 @@
          Features Blueberry Bagel, Chocolate Chip Bagel, Cinnamon Sugar Bagel,
          Honey Oat Bagel, and Strawberry Cream Bagel with natural sweetness brix
          ====================================================================== -->
-    <section id="sweet-bagels" class="py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
+    <section id="sweet-bagels" class="scroll-mt-32 sm:scroll-mt-36 py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -1853,7 +1877,7 @@
          Features Cream Cheese Classics, Veggie Bagel Sandwiches,
          Egg & Cheese Bagels, and Signature Sandwiches with cross-sections
          ====================================================================== -->
-    <section id="bagel-sandwiches" class="py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-bagel-warmCardDark">
+    <section id="bagel-sandwiches" class="scroll-mt-32 sm:scroll-mt-36 py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-bagel-warmCardDark">
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -2033,7 +2057,7 @@
          Features Classic Cream Cheese, Herb Cream Cheese, Garlic Spread,
          Chocolate Spread, and Seasonal Spreads in tubs and individual portions
          ====================================================================== -->
-    <section id="spreads-toppings" class="py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
+    <section id="spreads-toppings" class="scroll-mt-32 sm:scroll-mt-36 py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -2150,7 +2174,7 @@
           <div class="menu-item-card lg:col-span-2 bg-white dark:bg-bagel-warmCardDark rounded-2xl p-6 border border-stone-200 dark:border-stone-800 hover:border-amber-400 shadow-sm hover:shadow-md transition-all space-y-3" data-category="sweet vegetarian">
             <div class="flex justify-between items-start">
               <span class="w-10 h-10 rounded-xl bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-400 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-calendar-star"></i>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
               </span>
               <div class="text-right font-outfit">
                 <div class="text-xs text-stone-500 dark:text-stone-400">4oz Tub / 8oz Tub</div>
@@ -2179,7 +2203,7 @@
          Features Fresh Coffee, Tea, Fresh Juices, and Breakfast Combos
          with brew methods, pairings and package combo discounts
          ====================================================================== -->
-    <section id="breakfast-beverages" class="py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-bagel-warmCardDark">
+    <section id="breakfast-beverages" class="scroll-mt-32 sm:scroll-mt-36 py-16 sm:py-24 relative overflow-hidden bg-white dark:bg-bagel-warmCardDark">
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -2390,7 +2414,7 @@
          Features Full Transparent Pricing Matrix, Bundle Volume Tiers,
          Schmear Upgrades, and an Interactive Live Bagel Box Estimator
          ====================================================================== -->
-    <section id="menu-pricing" class="py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
+    <section id="menu-pricing" class="scroll-mt-32 sm:scroll-mt-36 py-16 sm:py-24 relative overflow-hidden bg-stone-50/60 dark:bg-bagel-warmDark/60">
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -2880,7 +2904,7 @@
         const { animate, spring } = window.Motion;
         
         // 1. Entrance drop animation with spring physics
-        const headerAnim = animate('#mainHeader', 
+        const headerAnim = animate('#mainNavbar', 
           { y: [-25, 0], opacity: [0, 1] }, 
           { duration: 0.6, easing: spring({ stiffness: 380, damping: 26 }) }
         );

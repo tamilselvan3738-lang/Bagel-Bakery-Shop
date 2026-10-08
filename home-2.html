@@ -595,17 +595,36 @@
        Zero horizontal overflow, fluid typography, responsive grids & tactile CTAs
        ======================================================================== -->
   <style id="masterResponsiveStyles">
+    /* Utility: Cross-Browser Hide Scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+
+    /* Map Frame Iframe Lock */
+    .map-frame-wrapper iframe {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 320px !important;
+      display: block !important;
+    }
+
     /* Universal Box-Sizing & Reset */
     *, *::before, *::after {
       box-sizing: border-box !important;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Screen Width Locking & Overflow Prevention */
+    /* Screen Width Locking & Overflow Prevention (Sticky-Safe) */
     html {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: hidden !important;
+      overflow-x: clip !important;
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
     }
@@ -613,7 +632,8 @@
     body {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: hidden !important;
+      overflow-x: clip !important;
+      overflow-y: visible !important;
       position: relative;
       margin: 0;
       padding: 0;
@@ -622,18 +642,22 @@
       flex-direction: column;
     }
 
-    /* Strict Structural Containment */
-    main, section, header, footer, article, nav, aside {
+    /* Strict Structural Containment (Excludes Header and Nav to guarantee Sticky & Dropdowns) */
+    main, section, footer, article, aside {
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
       overflow-x: clip !important;
+      overflow-x: hidden !important;
     }
 
     /* Images & Media Fluid Sizing: Max-Width 100% */
-    img, video, canvas, audio, iframe {
+    img, video, canvas, audio {
       max-width: 100% !important;
       height: auto !important;
+    }
+    iframe {
+      max-width: 100% !important;
     }
 
     /* Typography & Text Containment: Never Overflow Screen */
@@ -2278,7 +2302,7 @@
         const { animate, spring } = window.Motion;
         
         // 1. Entrance drop animation with spring physics
-        const headerAnim = animate('#mainHeader', 
+        const headerAnim = animate('#mainNavbar', 
           { y: [-25, 0], opacity: [0, 1] }, 
           { duration: 0.6, easing: spring({ stiffness: 380, damping: 26 }) }
         );

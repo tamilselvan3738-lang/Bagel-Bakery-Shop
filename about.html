@@ -647,17 +647,36 @@
        Zero horizontal overflow, fluid typography, responsive grids & tactile CTAs
        ======================================================================== -->
   <style id="masterResponsiveStyles">
+    /* Utility: Cross-Browser Hide Scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+
+    /* Map Frame Iframe Lock */
+    .map-frame-wrapper iframe {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 320px !important;
+      display: block !important;
+    }
+
     /* Universal Box-Sizing & Reset */
     *, *::before, *::after {
       box-sizing: border-box !important;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Screen Width Locking & Overflow Prevention */
+    /* Screen Width Locking & Overflow Prevention (Sticky-Safe) */
     html {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: hidden !important;
+      overflow-x: clip !important;
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
     }
@@ -665,7 +684,8 @@
     body {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: hidden !important;
+      overflow-x: clip !important;
+      overflow-y: visible !important;
       position: relative;
       margin: 0;
       padding: 0;
@@ -674,18 +694,22 @@
       flex-direction: column;
     }
 
-    /* Strict Structural Containment */
-    main, section, header, footer, article, nav, aside {
+    /* Strict Structural Containment (Excludes Header and Nav to guarantee Sticky & Dropdowns) */
+    main, section, footer, article, aside {
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
       overflow-x: clip !important;
+      overflow-x: hidden !important;
     }
 
     /* Images & Media Fluid Sizing: Max-Width 100% */
-    img, video, canvas, audio, iframe {
+    img, video, canvas, audio {
       max-width: 100% !important;
       height: auto !important;
+    }
+    iframe {
+      max-width: 100% !important;
     }
 
     /* Typography & Text Containment: Never Overflow Screen */
@@ -1465,17 +1489,17 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
             
             <!-- Bottom Archival Plaque -->
-            <div class="absolute bottom-4 left-4 right-4 p-3.5 rounded-2xl bg-white/95 dark:bg-black/85 backdrop-blur-md border border-amber-200/80 dark:border-amber-900/50 flex items-center justify-between shadow-lg">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl seal-heritage text-white flex items-center justify-center font-serif font-black text-xs shadow-md">
+            <div class="absolute bottom-3 sm:bottom-4 left-3 right-3 sm:left-4 sm:right-4 p-3 sm:p-3.5 rounded-2xl bg-white/95 dark:bg-black/85 backdrop-blur-md border border-amber-200/80 dark:border-amber-900/50 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 shadow-lg">
+              <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl seal-heritage text-white flex items-center justify-center font-serif font-black text-xs shadow-md shrink-0">
                   1928
                 </div>
-                <div>
-                  <span class="font-serif font-black text-xs sm:text-sm text-stone-900 dark:text-amber-100 block">The Katz Levain Sourdough</span>
-                  <span class="text-[10px] text-amber-700 dark:text-amber-400 font-bold font-outfit uppercase">Preserved Active For 98 Years</span>
+                <div class="min-w-0">
+                  <span class="font-serif font-black text-xs sm:text-sm text-stone-900 dark:text-amber-100 block truncate">The Katz Levain Sourdough</span>
+                  <span class="text-[9.5px] sm:text-[10px] text-amber-700 dark:text-amber-400 font-bold font-outfit uppercase block whitespace-nowrap">Preserved Active For 98 Years</span>
                 </div>
               </div>
-              <span class="px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-[10px] font-extrabold uppercase font-outfit">
+              <span class="px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-[9.5px] sm:text-[10px] font-extrabold uppercase font-outfit whitespace-nowrap shrink-0 border border-amber-500/20">
                 Living Heritage
               </span>
             </div>
@@ -1604,9 +1628,9 @@
               <i class="fa-solid fa-wheat-awn"></i>
             </div>
             <div class="space-y-1">
-              <div class="flex items-center justify-between">
-                <h3 class="font-serif font-black text-sm text-stone-900 dark:text-white">Hudson Valley Unbleached Wheat</h3>
-                <span class="text-[10px] font-bold text-amber-700 dark:text-amber-400 font-outfit uppercase">14.2% Protein</span>
+              <div class="flex items-start sm:items-center justify-between gap-2.5">
+                <h3 class="font-serif font-black text-sm text-stone-900 dark:text-white flex-1 leading-snug">Hudson Valley Unbleached Wheat</h3>
+                <span class="px-2 py-0.5 rounded-full bg-amber-500/15 dark:bg-amber-400/20 text-amber-800 dark:text-amber-300 text-[10px] font-bold font-outfit uppercase shrink-0 whitespace-nowrap border border-amber-500/20">14.2% Protein</span>
               </div>
               <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
                 Milled within 120 miles from upstate New York winter wheat. Unbromated, unbleached, and rich in natural wheat germ and nutty aromatics.
@@ -1620,9 +1644,9 @@
               <i class="fa-solid fa-jar"></i>
             </div>
             <div class="space-y-1">
-              <div class="flex items-center justify-between">
-                <h3 class="font-serif font-black text-sm text-stone-900 dark:text-white">Non-GMO Barley Malt Syrup</h3>
-                <span class="text-[10px] font-bold text-amber-700 dark:text-amber-400 font-outfit uppercase">Heritage Malthouse</span>
+              <div class="flex items-start sm:items-center justify-between gap-2.5">
+                <h3 class="font-serif font-black text-sm text-stone-900 dark:text-white flex-1 leading-snug">Non-GMO Barley Malt Syrup</h3>
+                <span class="px-2 py-0.5 rounded-full bg-amber-500/15 dark:bg-amber-400/20 text-amber-800 dark:text-amber-300 text-[10px] font-bold font-outfit uppercase shrink-0 whitespace-nowrap border border-amber-500/20">Heritage Malthouse</span>
               </div>
               <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
                 Slow-sprouted barley providing natural complex sugars for levain fermentation, giving the crust its deep amber luster without refined cane sugar.
@@ -1636,9 +1660,9 @@
               <i class="fa-solid fa-gem"></i>
             </div>
             <div class="space-y-1">
-              <div class="flex items-center justify-between">
-                <h3 class="font-serif font-black text-sm text-stone-900 dark:text-white">Pure Atlantic Flake Sea Salt</h3>
-                <span class="text-[10px] font-bold text-amber-700 dark:text-amber-400 font-outfit uppercase">Mineral Rich</span>
+              <div class="flex items-start sm:items-center justify-between gap-2.5">
+                <h3 class="font-serif font-black text-sm text-stone-900 dark:text-white flex-1 leading-snug">Pure Atlantic Flake Sea Salt</h3>
+                <span class="px-2 py-0.5 rounded-full bg-amber-500/15 dark:bg-amber-400/20 text-amber-800 dark:text-amber-300 text-[10px] font-bold font-outfit uppercase shrink-0 whitespace-nowrap border border-amber-500/20">Mineral Rich</span>
               </div>
               <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
                 Harvested from pristine ocean currents, providing clean salinity that accentuates grain sweetness without bitter chemical anticaking agents.
@@ -2338,7 +2362,7 @@
         const { animate, spring } = window.Motion;
         
         // 1. Entrance drop animation with spring physics
-        const headerAnim = animate('#mainHeader', 
+        const headerAnim = animate('#mainNavbar', 
           { y: [-25, 0], opacity: [0, 1] }, 
           { duration: 0.6, easing: spring({ stiffness: 380, damping: 26 }) }
         );
