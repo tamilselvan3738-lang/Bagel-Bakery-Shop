@@ -65,12 +65,12 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip;
+      overflow-x: hidden !important;
     }
 
     body {
       transition: background-color 0.3s ease, color 0.3s ease;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       width: 100% !important;
       margin: 0;
       padding: 0;
@@ -227,7 +227,7 @@
     html {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
     }
@@ -235,7 +235,7 @@
     body {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       overflow-y: visible !important;
       position: relative;
       margin: 0;
@@ -245,13 +245,25 @@
       flex-direction: column;
     }
 
-    /* Strict Structural Containment (Excludes Header and Nav to guarantee Sticky & Dropdowns) */
-    main, section, footer, article, aside {
+    /* Strict Structural Containment */
+    main, footer, article {
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
-      overflow-x: clip !important;
       overflow-x: hidden !important;
+    }
+    section {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #mobileDrawer {
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease-out;
+    }
+    #mobileDrawer.translate-x-0 {
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
 
     /* Images & Media Fluid Sizing: Max-Width 100% */
@@ -636,7 +648,13 @@
           <span>Return Home</span>
         </a>
 
-        <a href="menu.html" class="btn-3d btn-3d-switch px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 text-stone-700 dark:text-stone-300">
+                  <!-- DEDICATED SHOP -->
+          <a href="shop.html" class="nav-item-link px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1">
+            <span>Shop</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-amber-500 text-white text-[8px] font-black uppercase">Store</span>
+          </a>
+
+          <a href="menu.html" class="btn-3d btn-3d-switch px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 text-stone-700 dark:text-stone-300">
           <i class="fa-solid fa-utensils text-amber-500 text-xs"></i>
           <span>Explore Menu</span>
         </a>

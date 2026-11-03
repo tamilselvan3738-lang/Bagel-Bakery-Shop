@@ -67,13 +67,13 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip;
+      overflow-x: hidden !important;
       -webkit-text-size-adjust: 100%;
     }
 
     body {
       transition: background-color 0.3s ease, color 0.3s ease;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       width: 100% !important;
       margin: 0;
       padding: 0;
@@ -165,6 +165,8 @@
       top: 50%;
       left: 50%;
       width: 80%;
+      transform: translate(-50%, -50%) !important;
+      max-width: 100vw;
       height: 90%;
       background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.15) 45%, transparent 75%);
       filter: blur(36px);
@@ -329,11 +331,24 @@
     /* ==========================================================================
        HOME DROPDOWN MENU WITH PREVENTED TEXT-WRAP & PERFECT ALIGNMENT
        ========================================================================== */
-    .creative-dropdown {
+        .creative-dropdown {
       transform-origin: top center;
       transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
       min-width: 170px !important;
       width: 170px !important;
+    }
+    .group:hover .creative-dropdown,
+    .group.open .creative-dropdown,
+    #desktopHomeDropdown.open .creative-dropdown,
+    #desktopHomeDropdown.open #homeDropdownMenu {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateY(0) scale(1) !important;
+    }
+    #desktopHomeDropdown.open #homeChevron,
+    .group:hover #homeChevron {
+      transform: rotate(180deg);
     }
     [dir="rtl"] .creative-dropdown {
       text-align: right;
@@ -584,6 +599,37 @@
     .dark .navbar-scrolled .navbar-hearth-island {
       box-shadow: 0 24px 52px -10px rgba(0, 0, 0, 0.95), 0 6px 18px -2px rgba(0, 0, 0, 0.7);
     }
+  
+    #mobileDrawer {
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease-out;
+    }
+    #mobileDrawer.translate-x-0 {
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    #cartDrawer {
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease-out;
+    }
+    #cartDrawer.translate-x-0 {
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    #toastNotification {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      transform: translateY(120px);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #toastNotification.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
   </style>
 
   
@@ -624,7 +670,7 @@
     html {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
     }
@@ -632,7 +678,7 @@
     body {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       overflow-y: visible !important;
       position: relative;
       margin: 0;
@@ -647,7 +693,7 @@
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       overflow-x: hidden !important;
     }
 
@@ -979,19 +1025,17 @@
              Gallery, Visit Us, Contact
              ================================================================== -->
         <div id="navLinksContainer" class="hidden lg:flex items-center justify-center space-x-0.5 xl:space-x-1 rtl:space-x-reverse relative py-1 px-1">
-          
           <!-- Dynamic Framer Motion Gliding Pill -->
           <div id="navGlider"></div>
 
           <!-- 2.1 HOME (ON HOVER: ONLY SHOWS HOME 1 & HOME 2) -->
           <div class="relative group" id="desktopHomeDropdown">
-            <a href="index.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1 focus:outline-none" aria-haspopup="true">
+            <button type="button" onclick="toggleHomeDropdown(event)" class="nav-item-link  px-2.5 lg:px-2 xl:px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1 focus:outline-none cursor-pointer" aria-haspopup="true" aria-expanded="false">
               <span>Home</span>
-              <i class="fa-solid fa-chevron-down text-[8px] opacity-60 group-hover:rotate-180 transition-transform duration-200"></i>
-            </a>
+              <i id="homeChevron" class="fa-solid fa-chevron-down text-[8px] opacity-60 transition-transform duration-200"></i>
+            </button>
             
-            <!-- Shows ONLY Home 1 and Home 2 with Explicit Width & Guaranteed Single-Line Alignment -->
-            <div class="creative-dropdown absolute top-full left-0 rtl:left-auto rtl:right-0 mt-2.5 p-1.5 rounded-2xl bg-white/95 dark:bg-[#18100A]/95 backdrop-blur-2xl shadow-2xl border border-amber-200/80 dark:border-amber-900/60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div id="homeDropdownMenu" class="creative-dropdown absolute top-full left-0 rtl:left-auto rtl:right-0 mt-2 p-1.5 rounded-2xl bg-white/95 dark:bg-[#18100A]/95 backdrop-blur-2xl shadow-2xl border border-amber-200/80 dark:border-amber-900/60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']">
               <a href="index.html" class="dropdown-item flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-stone-800 dark:text-stone-100 hover:bg-amber-50 dark:hover:bg-amber-950/60 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                 <span class="whitespace-nowrap font-outfit text-xs font-bold">Home 1</span>
                 <span class="w-2 h-2 rounded-full bg-stone-300 dark:bg-stone-700 shrink-0"></span>
@@ -1003,42 +1047,47 @@
             </div>
           </div>
 
-          <!-- 2.2 ABOUT -->
-          <a href="about.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
-            About
+          <!-- 2.2 DEDICATED SHOP -->
+          <a href="shop.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1">
+            <span>Shop</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-amber-500 text-white text-[8px] font-black uppercase">Store</span>
           </a>
 
-          <!-- 2.3 MENU (WITH SUBTLE FRESH PULSE BADGE) -->
+          <!-- 2.3 DEDICATED MENU -->
           <a href="menu.html" class="nav-item-link active px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1.5">
             <span>Menu</span>
             <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
           </a>
 
-          <!-- 2.4 CATERING (ONLY CATERING) -->
-          <a href="catering.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
-            Catering
+          <!-- 2.4 DEDICATED ABOUT -->
+          <a href="about.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
+            About
           </a>
 
-          <!-- 2.5 GALLERY -->
-          <a href="gallery.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
-            Gallery
-          </a>
-
-          <!-- 2.6 VISIT US -->
-          <a href="visit-us.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
-            Visit Us
-          </a>
-
-          <!-- 2.7 CONTACT -->
+          <!-- 2.5 DEDICATED CONTACT -->
           <a href="contact.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
             Contact
           </a>
 
+          <!-- 2.6 CATERING -->
+          <a href="catering.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
+            Catering
+          </a>
+
+          <!-- 2.7 GALLERY -->
+          <a href="gallery.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
+            Gallery
+          </a>
+
+          <!-- 2.8 VISIT US -->
+          <a href="visit-us.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
+            Visit Us
+          </a>
         </div>
 
-        <!-- ==================================================================
+                <!-- ==================================================================
              3. RIGHT (LAPTOP VIEW): REMAINING CONTROLS
-             Dark Mode Toggle, RTL Toggle, 3D Book Now Button (REDIRECTS TO CONTACT.HTML)
+             Dark Mode Toggle, RTL Toggle, Cart Button, 3D Book Now Button
              ================================================================== -->
         <div class="hidden lg:flex items-center space-x-1.5 xl:space-x-2 rtl:space-x-reverse shrink-0">
 
@@ -1048,11 +1097,17 @@
           </button>
 
           <!-- 3.2 RTL TOGGLE (3D SWITCH - ICON ONLY) -->
-          <button id="rtlToggleBtn" onclick="toggleRTL()" class="btn-3d btn-3d-switch w-8 h-8 rounded-full flex items-center justify-center text-xs" title="Toggle RTL / LTR" aria-label="Toggle RTL">
+          <button id="rtlToggleBtn" onclick="toggleRTL()" class="btn-3d btn-3d-switch w-8 h-8 rounded-full flex items-center justify-center text-xs" title="Toggle RTL Reading Direction" aria-label="Toggle RTL">
             <i id="rtlIcon" class="fa-solid fa-right-left text-[11px] text-amber-600"></i>
           </button>
 
-          <!-- 3.3 3D "BOOK NOW" BUTTON REDIRECTS TO CONTACT.HTML -->
+          <!-- 3.3 3D SHOPPING BAG / CART BUTTON -->
+          <button id="cartBtnDesktop" onclick="toggleCartDrawer()" class="btn-3d btn-3d-switch relative w-8 h-8 rounded-full flex items-center justify-center text-xs" title="View Bakery Cart" aria-label="Shopping Cart">
+            <i class="fa-solid fa-bag-shopping text-amber-600 dark:text-amber-400 text-xs"></i>
+            <span id="cartCountBadgeDesktop" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-600 text-white text-[9px] font-black font-outfit flex items-center justify-center shadow-sm">0</span>
+          </button>
+
+          <!-- 3.4 3D "BOOK NOW" BUTTON REDIRECTS TO CONTACT.HTML -->
           <a href="contact.html" id="desktopBookNowBtn" class="btn-3d btn-3d-bakery px-4 py-2 text-xs xl:text-sm rounded-full flex items-center gap-1.5 shadow-md" aria-label="Book Now">
             <i class="fa-solid fa-calendar-check text-[10px] text-amber-100"></i>
             <span class="font-outfit font-extrabold uppercase tracking-wide">Book Now</span>
@@ -1063,14 +1118,21 @@
         <!-- ==================================================================
              4. MOBILE & TABLET VIEW: HAMBURGER AT RIGHT (GUARANTEED VISIBLE)
              ================================================================== -->
-        <div class="flex items-center lg:hidden">
+        <!-- ==================================================================
+             4. MOBILE CONTROLS: CART BUTTON + HAMBURGER
+             ================================================================== -->
+        <div class="flex items-center lg:hidden gap-2">
+          <!-- 3D Mobile Shopping Bag Button -->
+          <button id="cartBtnMobile" onclick="toggleCartDrawer()" class="btn-3d btn-3d-switch relative w-8 h-8 rounded-full flex items-center justify-center text-xs" title="View Bakery Cart" aria-label="Shopping Cart">
+            <i class="fa-solid fa-bag-shopping text-amber-600 dark:text-amber-400 text-xs"></i>
+            <span id="cartCountBadgeMobile" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-600 text-white text-[9px] font-black font-outfit flex items-center justify-center shadow-sm">0</span>
+          </button>
+
           <!-- 3D Tactile Hamburger Menu Button -->
           <button id="hamburgerBtn" onclick="toggleMobileMenu()" class="btn-3d btn-3d-hamburger" aria-label="Navigation Menu" aria-expanded="false">
-            <div class="hamburger-icon-wrapper" id="hamburgerBars">
-              <span id="bar1" class="hamburger-bar"></span>
-              <span id="bar2" class="hamburger-bar"></span>
-              <span id="bar3" class="hamburger-bar"></span>
-            </div>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
           </button>
         </div>
 
@@ -1165,17 +1227,18 @@
     <div class="flex-1 overflow-y-auto p-3.5 space-y-3">
       
       <!-- Nav Items List -->
+      <!-- Nav Items List -->
       <div id="mobileItemsList" class="space-y-1">
         
         <!-- Home Accordion (ONLY Home 1 and Home 2) -->
-        <div class="drawer-anim-item rounded-xl border border-amber-200/80 dark:border-amber-900/40 overflow-hidden bg-amber-50/40 dark:bg-amber-950/20">
+        <div class="drawer-anim-item rounded-xl border border-amber-200/80 dark:border-amber-900/40 overflow-hidden bg-amber-50/50 dark:bg-amber-950/20">
           <div class="w-full flex items-center justify-between p-2.5 font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-100/50 dark:hover:bg-amber-900/30">
             <a href="index.html" onclick="toggleMobileMenu()" class="flex items-center gap-2 flex-1">
               <i class="fa-solid fa-store text-amber-500 text-[11px]"></i>
               <span>Home</span>
             </a>
             <button type="button" onclick="toggleAccordion('mobileHomeSubmenu', 'homeArrow')" class="p-1 focus:outline-none" aria-label="Toggle Home Submenu">
-              <i id="homeArrow" class="fa-solid fa-chevron-down text-[10px] text-amber-700 dark:text-amber-400 transition-transform duration-200 "></i>
+              <i id="homeArrow" class="fa-solid fa-chevron-down text-[10px] text-amber-700 dark:text-amber-400 transition-transform duration-200"></i>
             </button>
           </div>
           <!-- Submenu showing ONLY Home 1 and Home 2 -->
@@ -1189,64 +1252,50 @@
           </div>
         </div>
 
-        <!-- About -->
-        <a href="about.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-circle-info text-amber-600 text-[11px]"></i>
-          <span>About</span>
+        <!-- Dedicated Shop (Store) -->
+        <a href="shop.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-bag-shopping text-amber-600 text-[11px]"></i>
+          <span>Shop Bagels (Store)</span>
+          <span class="ml-auto px-1.5 py-0.2 rounded-full bg-amber-500 text-white text-[8px] font-black uppercase">Online Store</span>
         </a>
 
-        <!-- Menu -->
-        <a href="menu.html" onclick="toggleMobileMenu()" class="drawer-anim-item active active-drawer-link flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+        <!-- Dedicated Menu -->
+        <a href="menu.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs bg-amber-500/15 text-amber-700 dark:text-amber-300 font-black">
           <i class="fa-solid fa-utensils text-amber-500 text-[11px]"></i>
           <span>Menu</span>
         </a>
 
-        <!-- Catering (ONLY CATERING) -->
-        <a href="catering.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-box-open text-amber-600 text-[11px]"></i>
-          <span>Catering</span>
+        <!-- Dedicated About -->
+        <a href="about.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-book-open text-amber-500 text-[11px]"></i>
+          <span>About</span>
         </a>
 
-        <!-- Gallery -->
-        <a href="gallery.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-camera text-amber-500 text-[11px]"></i>
-          <span>Gallery</span>
-        </a>
-
-        <!-- Visit Us -->
-        <a href="visit-us.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-location-dot text-amber-600 text-[11px]"></i>
-          <span>Visit Us</span>
-        </a>
-
-        <!-- Contact -->
-        <a href="contact.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+        <!-- Dedicated Contact -->
+        <a href="contact.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
           <i class="fa-solid fa-envelope text-amber-500 text-[11px]"></i>
           <span>Contact</span>
         </a>
 
+        <!-- Catering -->
+        <a href="catering.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-box-open text-amber-500 text-[11px]"></i>
+          <span>Catering</span>
+        </a>
+
+        <!-- Gallery -->
+        <a href="gallery.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-images text-amber-500 text-[11px]"></i>
+          <span>Gallery</span>
+        </a>
+
+        <!-- Visit Us -->
+        <a href="visit-us.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-location-dot text-amber-500 text-[11px]"></i>
+          <span>Visit Us</span>
+        </a>
+
       </div>
-
-      <!-- Settings & Toggles inside Drawer (Dark Mode & RTL) -->
-      <div class="drawer-anim-item p-2.5 rounded-xl bg-amber-50/70 dark:bg-bagel-warmSurfaceDark border border-amber-200/80 dark:border-amber-900/40 space-y-2">
-        <div class="text-[9px] font-bold font-outfit text-stone-500 dark:text-stone-400 uppercase tracking-wider">
-          Preferences
-        </div>
-        
-        <div class="grid grid-cols-2 gap-2 grid-mobile-keep">
-          <!-- Dark/Light Toggle -->
-          <button onclick="toggleTheme()" class="btn-3d btn-3d-switch p-2 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold" title="Toggle Dark/Light">
-            <i class="fa-solid fa-sun text-amber-500 text-xs"></i>
-            <span id="mobileThemeLabel">Light</span>
-          </button>
-
-          <!-- RTL Toggle -->
-          <button onclick="toggleRTL()" class="btn-3d btn-3d-switch p-2 rounded-xl flex items-center justify-center text-xs font-bold" title="Toggle RTL">
-            <i class="fa-solid fa-right-left text-amber-600 text-xs"></i>
-          </button>
-        </div>
-      </div>
-
     </div>
 
     <!-- Drawer Footer: 3D "Book Now" Button (REDIRECTS TO CONTACT.HTML) -->
@@ -1258,6 +1307,332 @@
     </div>
 
   </aside>
+
+  <!-- ========================================================================
+       SLIDE-OVER SHOPPING BAG / CART DRAWER
+       Full E-Commerce Interactive Experience for Artisanal Bakery
+       ======================================================================== -->
+  <div id="cartDrawerOverlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <aside id="cartDrawer" class="invisible pointer-events-none fixed top-0 right-0 rtl:right-auto rtl:left-0 w-full max-w-md h-full bg-[#FAF6F0] dark:bg-bagel-warmCardDark border-l rtl:border-l-0 rtl:border-r border-amber-200/80 dark:border-amber-900/40 z-50 shadow-2xl flex flex-col transform translate-x-full rtl:-translate-x-full transition-all duration-300 ease-out">
+    
+    <!-- Cart Header -->
+    <div class="p-4 sm:p-5 border-b border-amber-200/60 dark:border-amber-900/40 flex items-center justify-between bg-white dark:bg-bagel-warmSurfaceDark">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+        <div>
+          <h3 class="font-serif font-black text-base text-stone-900 dark:text-white leading-tight">
+            Your Fresh Bakery Bag
+          </h3>
+          <span id="cartDrawerItemCount" class="text-[11px] text-amber-700 dark:text-amber-400 font-bold font-outfit uppercase tracking-wider">
+            0 Fresh Items
+          </span>
+        </div>
+      </div>
+      <button onclick="toggleCartDrawer()" class="btn-3d btn-3d-switch w-8 h-8 rounded-full flex items-center justify-center text-stone-500 hover:text-amber-600" aria-label="Close cart">
+        <i class="fa-solid fa-xmark text-xs"></i>
+      </button>
+    </div>
+
+    <!-- Free Delivery Progress Bar -->
+    <div class="px-4 py-3 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200/40 dark:border-amber-900/30 text-xs font-outfit">
+      <div class="flex items-center justify-between font-bold text-[11px] text-stone-700 dark:text-amber-200 mb-1">
+        <span id="freeShippingNotice"><i class="fa-solid fa-truck-fast text-amber-500 mr-1.5"></i>Add $35.00 for Free NYC Morning Delivery!</span>
+        <span id="freeShippingPercent" class="font-black text-amber-600">0%</span>
+      </div>
+      <div class="w-full h-1.5 rounded-full bg-amber-200/60 dark:bg-stone-800 overflow-hidden">
+        <div id="freeShippingBar" class="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full transition-all duration-300" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items Scrollable List -->
+    <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+      <!-- Items dynamically injected here -->
+    </div>
+
+    <!-- Empty Cart State -->
+    <div id="cartEmptyState" class="hidden flex-1 flex-col items-center justify-center p-6 text-center space-y-4">
+      <div class="w-16 h-16 rounded-full bg-amber-500/10 dark:bg-amber-400/10 text-amber-600 flex items-center justify-center text-2xl">
+        <i class="fa-solid fa-bread-slice"></i>
+      </div>
+      <div class="space-y-1">
+        <h4 class="font-serif font-black text-lg text-stone-900 dark:text-white">Your Bag is Empty</h4>
+        <p class="text-xs text-stone-500 dark:text-stone-400 max-w-xs leading-relaxed">
+          Warm stone-hearth bagels and morning espresso pairings are baking fresh right now.
+        </p>
+      </div>
+      <button onclick="toggleCartDrawer(); document.getElementById('sectionSignatures').scrollIntoView({behavior:'smooth'});" class="btn-3d btn-3d-bakery px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider font-outfit">
+        Browse Fresh Hearth Bagels
+      </button>
+    </div>
+
+    <!-- Cart Footer & Summary -->
+    <div id="cartFooterSection" class="p-4 border-t border-amber-200/60 dark:border-amber-900/40 bg-white dark:bg-bagel-warmSurfaceDark space-y-3">
+      
+      <!-- Promo Code Input -->
+      <div class="flex items-center gap-2">
+        <div class="relative flex-1">
+          <input id="cartPromoInput" type="text" placeholder="Promo code (e.g. DAWN13)" class="w-full pl-3 pr-2 py-2 rounded-xl border border-amber-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-xs font-outfit uppercase tracking-wider focus:outline-none focus:ring-1 focus:ring-amber-500" />
+        </div>
+        <button onclick="applyCartPromo()" class="btn-3d btn-3d-switch px-3.5 py-2 rounded-xl text-xs font-bold font-outfit">
+          Apply
+        </button>
+      </div>
+
+      <!-- Applied Promo Tag (Hidden by default) -->
+      <div id="appliedPromoBadge" class="hidden items-center justify-between px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-bold font-outfit">
+        <span id="appliedPromoText"><i class="fa-solid fa-tag mr-1.5"></i>Code Applied</span>
+        <button onclick="removePromo()" class="text-stone-400 hover:text-stone-600 text-xs">&times;</button>
+      </div>
+
+      <!-- Calculation Rows -->
+      <div class="space-y-1.5 text-xs text-stone-600 dark:text-stone-300 font-outfit border-t border-amber-200/40 dark:border-amber-900/30 pt-2.5">
+        <div class="flex justify-between">
+          <span>Subtotal</span>
+          <span id="cartSubtotal" class="font-bold text-stone-900 dark:text-white">$0.00</span>
+        </div>
+        <div id="cartDiscountRow" class="hidden justify-between text-emerald-600 dark:text-emerald-400 font-bold">
+          <span>Promo Discount</span>
+          <span id="cartDiscount">-$0.00</span>
+        </div>
+        <div class="flex justify-between">
+          <span>NYC Morning Delivery</span>
+          <span id="cartDeliveryFee" class="font-bold text-stone-900 dark:text-white">$4.99</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Estimated NY Sales Tax (8.875%)</span>
+          <span id="cartTax" class="font-bold text-stone-900 dark:text-white">$0.00</span>
+        </div>
+        <div class="flex justify-between text-sm font-black text-stone-900 dark:text-amber-100 border-t border-amber-200/60 dark:border-amber-900/40 pt-2">
+          <span>Estimated Total</span>
+          <span id="cartTotal" class="text-base text-amber-600 dark:text-amber-400">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Checkout Button -->
+      <button onclick="openCheckoutModal()" class="btn-3d btn-3d-bakery w-full py-3 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-wider font-outfit flex items-center justify-center gap-2 shadow-lg">
+        <i class="fa-solid fa-lock text-xs"></i>
+        <span>Proceed to Fresh Checkout</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ========================================================================
+       E-COMMERCE CHECKOUT & FULFILLMENT MODAL
+       ======================================================================== -->
+  <div id="checkoutModalBackdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-3 sm:p-4">
+    <div id="checkoutModalContent" class="relative w-full max-w-lg bg-white dark:bg-bagel-warmCardDark rounded-3xl p-5 sm:p-6 shadow-2xl border border-amber-200 dark:border-amber-900/60 transform scale-95 transition-all duration-300 max-h-[92vh] overflow-y-auto">
+      
+      <button onclick="closeCheckoutModal()" class="btn-3d btn-3d-switch absolute top-4 right-4 rtl:right-auto rtl:left-4 w-7 h-7 rounded-full flex items-center justify-center text-stone-400 hover:text-amber-600" aria-label="Close checkout">
+        <i class="fa-solid fa-xmark text-xs"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-600 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-basket-shopping"></i>
+        </div>
+        <div>
+          <h3 class="font-serif font-black text-lg text-stone-900 dark:text-white leading-tight">
+            Complete Bakery Order
+          </h3>
+          <p class="text-[11px] text-amber-700 dark:text-amber-400 font-semibold font-outfit uppercase">
+            Stone Hearth Fired Fresh &bull; Guaranteed Hot
+          </p>
+        </div>
+      </div>
+
+      <form onsubmit="handleCheckoutSubmit(event)" class="space-y-4">
+        
+        <!-- Fulfillment Selector: Pickup vs Delivery -->
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1.5 font-outfit">
+            Fulfillment Method
+          </label>
+          <div class="grid grid-cols-2 gap-2 text-xs font-outfit">
+            <label class="fulfillment-opt p-3 rounded-2xl border-2 border-amber-500 bg-amber-500/10 cursor-pointer flex flex-col items-center justify-center text-center">
+              <input type="radio" name="fulfillment" value="pickup" checked onchange="toggleFulfillmentMode(this.value)" class="hidden" />
+              <i class="fa-solid fa-store text-amber-600 text-sm mb-1"></i>
+              <span class="font-bold text-stone-900 dark:text-white">Bakery Pickup</span>
+              <span class="text-[10px] text-stone-500">142 Grand St, Soho</span>
+            </label>
+            <label class="fulfillment-opt p-3 rounded-2xl border-2 border-transparent bg-stone-100 dark:bg-stone-900 cursor-pointer flex flex-col items-center justify-center text-center">
+              <input type="radio" name="fulfillment" value="delivery" onchange="toggleFulfillmentMode(this.value)" class="hidden" />
+              <i class="fa-solid fa-truck-fast text-amber-600 text-sm mb-1"></i>
+              <span class="font-bold text-stone-900 dark:text-white">NYC Courier</span>
+              <span class="text-[10px] text-stone-500">Thermal Crate Delivery</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Schedule Batch Time -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1 font-outfit">
+              Ready Time Window
+            </label>
+            <select required class="w-full px-3 py-2.5 rounded-xl border border-amber-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-xs font-outfit focus:outline-none focus:ring-1 focus:ring-amber-500">
+              <option>Next Oven Batch (15 - 20 mins)</option>
+              <option>Morning Rush (08:00 AM - 08:30 AM)</option>
+              <option>Mid-Morning Batch (09:30 AM - 10:00 AM)</option>
+              <option>Lunch &amp; Catering (12:00 PM - 12:30 PM)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1 font-outfit">
+              Bagel Prep Options
+            </label>
+            <select class="w-full px-3 py-2.5 rounded-xl border border-amber-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-xs font-outfit focus:outline-none focus:ring-1 focus:ring-amber-500">
+              <option>Sliced &amp; Lightly Toasted</option>
+              <option>Sliced &amp; Well Done Dark Crust</option>
+              <option>Whole Unsliced (Keep Fresh to Toast at Home)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="space-y-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1 font-outfit">
+                Full Name
+              </label>
+              <input type="text" required placeholder="Alex Morgan" class="w-full px-3 py-2 rounded-xl border border-amber-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1 font-outfit">
+                Mobile Phone (SMS Ready Alerts)
+              </label>
+              <input type="tel" required placeholder="(212) 555-0199" class="w-full px-3 py-2 rounded-xl border border-amber-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+            </div>
+          </div>
+
+          <div id="deliveryAddressField" class="hidden">
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1 font-outfit">
+              NYC Delivery Street Address &bull; Apartment / Office Suite
+            </label>
+            <input type="text" placeholder="452 Broadway, Floor 4, New York, NY 10013" class="w-full px-3 py-2 rounded-xl border border-amber-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1 font-outfit">
+              Special Baker's Instructions
+            </label>
+            <input type="text" placeholder="Extra schmear on the side, napkins, cut in halves..." class="w-full px-3 py-2 rounded-xl border border-amber-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+          </div>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1.5 font-outfit">
+            Payment Method
+          </label>
+          <div class="grid grid-cols-3 gap-2 text-xs font-outfit">
+            <label class="p-2.5 rounded-xl border border-amber-500 bg-amber-500/10 cursor-pointer flex items-center justify-center gap-1.5 font-bold text-stone-800 dark:text-white">
+              <input type="radio" name="payment" checked class="hidden" />
+              <i class="fa-brands fa-apple text-sm"></i>
+              <span>Apple Pay</span>
+            </label>
+            <label class="p-2.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 cursor-pointer flex items-center justify-center gap-1.5 font-bold text-stone-800 dark:text-white">
+              <input type="radio" name="payment" class="hidden" />
+              <i class="fa-solid fa-credit-card text-xs text-amber-600"></i>
+              <span>Credit Card</span>
+            </label>
+            <label class="p-2.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 cursor-pointer flex items-center justify-center gap-1.5 font-bold text-stone-800 dark:text-white">
+              <input type="radio" name="payment" class="hidden" />
+              <i class="fa-solid fa-store text-xs text-amber-600"></i>
+              <span>At Counter</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Checkout Order Total Preview -->
+        <div class="p-3.5 rounded-2xl bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/20 flex items-center justify-between font-outfit">
+          <div>
+            <span class="text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase block">Order Total</span>
+            <span id="checkoutModalTotal" class="font-serif font-black text-xl text-stone-900 dark:text-white">$0.00</span>
+          </div>
+          <div class="text-right text-[11px] text-stone-500 dark:text-stone-400">
+            <span>Includes NY Tax</span><br />
+            <span class="text-emerald-600 dark:text-emerald-400 font-bold">Earn 120 Bagel Club Points</span>
+          </div>
+        </div>
+
+        <!-- Place Order Button -->
+        <button type="submit" class="btn-3d btn-3d-bakery w-full py-3 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-wider font-outfit flex items-center justify-center gap-2 shadow-xl">
+          <i class="fa-solid fa-check text-xs"></i>
+          <span>Place Bakery Order</span>
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       ORDER SUCCESS CONFIRMATION MODAL
+       ======================================================================== -->
+  <div id="orderConfirmationModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md bg-white dark:bg-bagel-warmCardDark rounded-3xl p-6 sm:p-7 shadow-2xl border border-amber-300 dark:border-amber-900/60 text-center space-y-4">
+      
+      <!-- Big Check Icon -->
+      <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 text-stone-950 flex items-center justify-center text-2xl mx-auto shadow-lg shadow-amber-500/30">
+        <i class="fa-solid fa-check"></i>
+      </div>
+
+      <div class="space-y-1">
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-xs font-bold font-outfit uppercase">
+          Order Confirmed &bull; Sent to Hearth
+        </span>
+        <h3 class="font-serif font-black text-2xl text-stone-900 dark:text-white">
+          Baking Your Order!
+        </h3>
+        <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed font-outfit">
+          Thank you! Our master bakers are slipping your bagels onto water-soaked cedar boards for the brick oven.
+        </p>
+      </div>
+
+      <!-- Order Tracking Card -->
+      <div class="card-hearth p-4 text-left space-y-2 text-xs font-outfit">
+        <div class="flex justify-between items-center border-b border-amber-200/60 dark:border-amber-900/40 pb-2">
+          <span class="text-stone-500">Order Number</span>
+          <span id="confirmedOrderNum" class="font-mono font-black text-amber-600 dark:text-amber-400 text-sm">#BK-9241</span>
+        </div>
+        <div class="flex justify-between items-center border-b border-amber-200/60 dark:border-amber-900/40 pb-2">
+          <span class="text-stone-500">Estimated Ready Time</span>
+          <span class="font-bold text-stone-900 dark:text-white">15 Minutes (Warm Fired)</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-stone-500">Pickup Location</span>
+          <span class="font-bold text-stone-900 dark:text-white">142 Grand St, Soho</span>
+        </div>
+      </div>
+
+      <button onclick="closeConfirmationModal()" class="btn-3d btn-3d-bakery w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider font-outfit">
+        Return to Bakery Shop
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       FLOATING INTERACTIVE TOAST NOTIFICATION
+       ======================================================================== -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 rtl:right-auto rtl:left-6 z-50 max-w-sm w-full bg-white dark:bg-bagel-warmSurfaceDark border border-amber-300 dark:border-amber-900/80 rounded-2xl shadow-2xl p-3.5 flex items-center justify-between gap-3 font-outfit">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
+        <i class="fa-solid fa-bread-slice text-sm"></i>
+      </div>
+      <div>
+        <h5 id="toastTitle" class="font-bold text-xs text-stone-900 dark:text-white">Added to Bag!</h5>
+        <p id="toastSubtitle" class="text-[11px] text-stone-500 dark:text-stone-400">Everything Crown &bull; $2.75</p>
+      </div>
+    </div>
+    <button onclick="toggleCartDrawer()" class="btn-3d btn-3d-bakery px-3 py-1.5 rounded-xl text-[11px] font-bold shrink-0">
+      View Bag
+    </button>
+  </div>
 
   <!-- ========================================================================
        3D "BOOK NOW" RESERVATION MODAL
@@ -1356,6 +1731,92 @@
        Covering All Required Bagels, Sandwiches, Spreads, Beverages & Pricing Matrix
        ======================================================================== -->
   <main id="mainMenuContent" class="flex-1 w-full overflow-hidden">
+    <!-- ======================================================================
+         HERO SECTION: CONSISTENT HERO SECTION HEIGHT & PADDING ACROSS ALL PAGES
+         relative pt-6 pb-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto
+         ====================================================================== -->
+    <section id="menuSectionHero" class="relative pt-6 pb-16 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      
+      <!-- Ambient Hearth Glow Behind Hero -->
+      <div class="absolute -top-12 left-1/4 w-96 h-96 rounded-full bg-amber-500/10 dark:bg-amber-500/15 blur-3xl pointer-events-none"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10 text-left rtl:text-right">
+        
+        <!-- Left: Menu Narrative & Prominent CTAs (7 cols) -->
+        <div id="menuHeroCol" class="lg:col-span-7 space-y-6">
+          
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 dark:bg-amber-400/20 border border-amber-500/30 text-amber-800 dark:text-amber-300 font-outfit text-xs font-black uppercase tracking-wider shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+            <span>STONE-HEARTH NYC BAKEHOUSE &bull; HANDCRAFTED DAILY</span>
+          </div>
+
+          <h1 class="font-serif font-black text-3xl sm:text-4xl md:text-5xl lg:text-5xl text-stone-900 dark:text-stone-50 leading-[1.14] tracking-tight">
+            Full Artisan Menu &mdash;<br />
+            <span class="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-clip-text text-transparent">
+              Fresh From the Brick Oven.
+            </span>
+          </h1>
+
+          <p class="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed max-w-2xl font-normal">
+            Explore our complete heritage menu of 24-hour cold-fermented kettle bagels, small-batch whipped farm schmears, breakfast sandwiches, and single-origin brews. Every item is crafted fresh each morning and available for immediate table service, counter pickup, or NYC delivery.
+          </p>
+
+          <!-- PROMINENT CTAs: "Shop Bagels", "Order Now", "Catering Menu" -->
+          <div class="flex flex-wrap items-center gap-3 pt-1">
+            <a href="shop.html" class="btn-3d btn-3d-bakery px-6 py-3 rounded-full text-xs sm:text-sm font-outfit font-extrabold uppercase tracking-wider flex items-center gap-2 shadow-lg">
+              <i class="fa-solid fa-bag-shopping text-amber-100 text-xs"></i>
+              <span>Shop Bagels</span>
+            </a>
+            <button onclick="addToCart({ id: 'bakers-dozen-batch', name: 'Fresh Hearth Baker\'s Dozen (13 Assorted)', price: 24.00, image: 'images/hero_fresh_bagels.jpg', category: 'Fresh Kettle Batch' }, true)" class="btn-3d btn-3d-switch px-5 py-3 rounded-full text-xs sm:text-sm font-outfit font-bold flex items-center gap-2">
+              <i class="fa-solid fa-cart-shopping text-amber-600 dark:text-amber-400 text-xs"></i>
+              <span>Order Now &bull; Baker's Dozen ($24)</span>
+            </button>
+            <a href="catering.html" class="btn-3d btn-3d-switch px-4 py-3 rounded-full text-xs sm:text-sm font-outfit font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-box-open text-amber-600 text-xs"></i>
+              <span>Catering Platters</span>
+            </a>
+          </div>
+
+          <!-- Micro-stats trust row -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-amber-200/60 dark:border-amber-900/40 text-center text-xs font-outfit">
+            <div>
+              <span class="font-outfit font-black text-sm text-stone-900 dark:text-amber-100 block">36 Hours</span>
+              <span class="text-[10px] text-stone-500 dark:text-stone-400">Cold Fermentation</span>
+            </div>
+            <div>
+              <span class="font-outfit font-black text-sm text-stone-900 dark:text-amber-100 block">480&deg;F Deck</span>
+              <span class="text-[10px] text-stone-500 dark:text-stone-400">Brick Hearth Fire</span>
+            </div>
+            <div>
+              <span class="font-outfit font-black text-sm text-stone-900 dark:text-amber-100 block">100% Malt</span>
+              <span class="text-[10px] text-stone-500 dark:text-stone-400">Poaching Kettle</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: 3D Photo Container with Floating Badges (5 cols) -->
+        <div id="menuHeroPhotoCol" class="lg:col-span-5 relative">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-amber-200/80 dark:border-amber-900/60 group">
+            <img src="images/menu_classic_bagels.jpg" alt="Artisan Bagel Menu Assortment" class="w-full h-80 sm:h-[420px] object-cover transform group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            
+            <div class="absolute bottom-4 left-4 right-4 p-3.5 rounded-2xl bg-white/90 dark:bg-black/80 backdrop-blur-md border border-white/20 dark:border-white/10 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-extrabold text-amber-600 dark:text-amber-400 font-outfit uppercase">Hand-Boiled &bull; Fired Hourly</span>
+                <h4 class="font-serif font-black text-sm text-stone-900 dark:text-white">Authentic NY Recipes</h4>
+              </div>
+              <span class="font-outfit font-black text-xs px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                Fresh From Hearth
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
 
     <!-- ======================================================================
          STICKY SUB-NAVIGATION & DIETARY FILTER CONTROLS BAR
@@ -1894,7 +2355,7 @@
         </div>
 
         <!-- Visual Hero Banner of Sandwiches -->
-        <div class="mb-12 rounded-3xl overflow-hidden border border-amber-200/80 dark:border-amber-900/50 shadow-xl relative aspect-[16/7] max-h-[360px] group">
+        <div class="w-full max-w-5xl mx-auto mb-12 rounded-3xl overflow-hidden border border-amber-200/80 dark:border-amber-900/50 shadow-xl relative h-64 sm:h-72 md:h-80 group">
           <img src="images/menu_bagel_sandwiches.jpg" alt="Artisan Bagel Sandwiches Stacked on Deli Block" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/40 to-transparent flex flex-col justify-end p-6 sm:p-10 text-white">
             <span class="text-[11px] font-outfit uppercase tracking-widest text-emerald-400 font-black">Assembled Fresh To Order</span>
@@ -2074,7 +2535,7 @@
         </div>
 
         <!-- Visual Hero Ramekins Banner -->
-        <div class="mb-12 rounded-3xl overflow-hidden border border-amber-200/80 dark:border-amber-900/50 shadow-xl relative aspect-[16/7] max-h-[340px] group">
+        <div class="w-full max-w-5xl mx-auto mb-12 rounded-3xl overflow-hidden border border-amber-200/80 dark:border-amber-900/50 shadow-xl relative h-64 sm:h-72 md:h-80 group">
           <img src="images/menu_artisan_spreads.jpg" alt="Artisan Cream Cheese Spreads in Pottery Ramekins" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/40 to-transparent flex flex-col justify-end p-6 sm:p-10 text-white">
             <span class="text-[11px] font-outfit uppercase tracking-widest text-amber-400 font-black">Farm Fresh Cultured Dairy</span>
@@ -2220,7 +2681,7 @@
         </div>
 
         <!-- Visual Hero Beverage Banner -->
-        <div class="mb-12 rounded-3xl overflow-hidden border border-amber-200/80 dark:border-amber-900/50 shadow-xl relative aspect-[16/7] max-h-[340px] group">
+        <div class="w-full max-w-5xl mx-auto mb-12 rounded-3xl overflow-hidden border border-amber-200/80 dark:border-amber-900/50 shadow-xl relative h-64 sm:h-72 md:h-80 group">
           <img src="images/menu_breakfast_beverages.jpg" alt="Breakfast Beverages & Morning Bagel Spread" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/40 to-transparent flex flex-col justify-end p-6 sm:p-10 text-white">
             <span class="text-[11px] font-outfit uppercase tracking-widest text-amber-400 font-black">Barista Craft</span>
@@ -2446,6 +2907,7 @@
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Add butter or jam (+$1.00)</li>
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Add artisanal schmear (+$1.75)</li>
             </ul>
+            <button onclick="addToCart({ id: 'single-classic-bagel', name: 'Single Hearth Bagel', price: 2.25, image: 'images/menu_classic_bagels.jpg', category: 'Everyday Bagel' }, true)" class="btn-3d btn-3d-switch w-full py-2 rounded-xl text-xs font-bold font-outfit mt-3"><i class="fa-solid fa-cart-shopping text-xs mr-1"></i> Add to Cart &bull; $2.25</button>
           </div>
 
           <!-- Tier 2: Baker's Half-Dozen (Featured) -->
@@ -2464,6 +2926,7 @@
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Includes one 4oz Schmear tub ($4 value)</li>
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Packaged in thermal bakery box</li>
             </ul>
+            <button onclick="addToCart({ id: 'half-dozen-box', name: 'Baker\'s Half-Dozen Box (6 Bagels + Schmear)', price: 12.50, image: 'images/hero_fresh_bagels.jpg', category: 'Bakery Box' }, true)" class="btn-3d btn-3d-bakery w-full py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider font-outfit mt-3 shadow-md"><i class="fa-solid fa-cart-shopping text-xs mr-1"></i> Add to Cart &bull; $12.50</button>
           </div>
 
           <!-- Tier 3: Baker's Dozen -->
@@ -2479,6 +2942,7 @@
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Includes two 4oz Schmear tubs ($8 value)</li>
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500 text-[10px]"></i> Maximum savings ($9+ discount)</li>
             </ul>
+            <button onclick="addToCart({ id: 'bakers-dozen-batch', name: 'Fresh Hearth Baker\'s Dozen (13 Assorted)', price: 22.00, image: 'images/hero_fresh_bagels.jpg', category: 'Fresh Kettle Batch' }, true)" class="btn-3d btn-3d-bakery w-full py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider font-outfit mt-3 shadow-md"><i class="fa-solid fa-cart-shopping text-xs mr-1"></i> Add to Cart &bull; $22.00</button>
           </div>
 
         </div>
@@ -3444,7 +3908,413 @@
         });
       }
     });
-  </script>
+  
+
+    // ==========================================================================
+    // E-COMMERCE CART ENGINE & PERSISTENCE
+    // ==========================================================================
+    let isCartOpen = false;
+    let cart = [];
+    let appliedPromo = null;
+
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartDrawerOverlay = document.getElementById('cartDrawerOverlay');
+    const checkoutModalBackdrop = document.getElementById('checkoutModalBackdrop');
+    const orderConfirmationModal = document.getElementById('orderConfirmationModal');
+    const toastNotification = document.getElementById('toastNotification');
+
+    try {
+      const savedCart = localStorage.getItem('bagel_cart_items');
+      if (savedCart) {
+        cart = JSON.parse(savedCart);
+      } else {
+        cart = [
+          { id: 'everything-crown', name: 'The Everything Crown', price: 2.75, qty: 2, image: 'images/signature_bagels.jpg', category: 'Heirloom Seed Bagel' }
+        ];
+      }
+
+      const savedPromo = localStorage.getItem('bagel_cart_promo');
+      if (savedPromo) {
+        appliedPromo = JSON.parse(savedPromo);
+      }
+    } catch(e) {}
+
+    // ----------------------------------------------------
+    // E-COMMERCE CART ENGINE
+    // ----------------------------------------------------
+    function saveCart() {
+      try {
+        localStorage.setItem('bagel_cart_items', JSON.stringify(cart));
+        if (appliedPromo) {
+          localStorage.setItem('bagel_cart_promo', JSON.stringify(appliedPromo));
+        } else {
+          localStorage.removeItem('bagel_cart_promo');
+        }
+      } catch(e) {}
+    }
+
+    function addToCart(item, openDrawer = false) {
+      const existing = cart.find(i => i.id === item.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          qty: 1,
+          image: item.image || 'images/signature_bagels.jpg',
+          category: item.category || 'Bakery Item'
+        });
+      }
+
+      saveCart();
+      renderCart();
+      showToast('Added to Bakery Bag!', `${item.name} &bull; $${item.price.toFixed(2)}`, item.image);
+
+      if (openDrawer) {
+        openCartDrawer();
+      }
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(i => i.id !== id);
+      saveCart();
+      renderCart();
+    }
+
+    function updateQuantity(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        removeFromCart(id);
+      } else {
+        saveCart();
+        renderCart();
+      }
+    }
+
+    function renderCart() {
+      const itemsContainer = document.getElementById('cartItemsContainer');
+      const emptyState = document.getElementById('cartEmptyState');
+      const footerSection = document.getElementById('cartFooterSection');
+      const subtotalElem = document.getElementById('cartSubtotal');
+      const discountRow = document.getElementById('cartDiscountRow');
+      const discountElem = document.getElementById('cartDiscount');
+      const deliveryFeeElem = document.getElementById('cartDeliveryFee');
+      const taxElem = document.getElementById('cartTax');
+      const totalElem = document.getElementById('cartTotal');
+      const checkoutTotalElem = document.getElementById('checkoutModalTotal');
+      const itemCountHeader = document.getElementById('cartDrawerItemCount');
+      const desktopBadge = document.getElementById('cartCountBadgeDesktop');
+      const mobileBadge = document.getElementById('cartCountBadgeMobile');
+      const freeShippingNotice = document.getElementById('freeShippingNotice');
+      const freeShippingPercent = document.getElementById('freeShippingPercent');
+      const freeShippingBar = document.getElementById('freeShippingBar');
+      const appliedPromoBadge = document.getElementById('appliedPromoBadge');
+      const appliedPromoText = document.getElementById('appliedPromoText');
+
+      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      if (desktopBadge) desktopBadge.textContent = totalCount;
+      if (mobileBadge) mobileBadge.textContent = totalCount;
+      if (itemCountHeader) itemCountHeader.textContent = `${totalCount} Fresh Item${totalCount === 1 ? '' : 's'}`;
+
+      if (cart.length === 0) {
+        if (itemsContainer) itemsContainer.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        if (footerSection) footerSection.classList.add('hidden');
+        if (freeShippingBar) freeShippingBar.style.width = '0%';
+        if (freeShippingPercent) freeShippingPercent.textContent = '0%';
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+      if (footerSection) footerSection.classList.remove('hidden');
+
+      // Calculate financials
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      
+      // Free delivery progress ($35.00 threshold)
+      const threshold = 35.00;
+      if (subtotal >= threshold) {
+        if (freeShippingBar) freeShippingBar.style.width = '100%';
+        if (freeShippingPercent) freeShippingPercent.textContent = '100%';
+        if (freeShippingNotice) freeShippingNotice.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i>Unlocked FREE NYC Morning Delivery!';
+      } else {
+        const remaining = (threshold - subtotal).toFixed(2);
+        const pct = Math.min(100, Math.round((subtotal / threshold) * 100));
+        if (freeShippingBar) freeShippingBar.style.width = `${pct}%`;
+        if (freeShippingPercent) freeShippingPercent.textContent = `${pct}%`;
+        if (freeShippingNotice) freeShippingNotice.innerHTML = `<i class="fa-solid fa-truck-fast text-amber-500 mr-1.5"></i>Add $${remaining} for Free NYC Morning Delivery!`;
+      }
+
+      // Promo discount
+      let discount = 0;
+      if (appliedPromo) {
+        discount = appliedPromo.discount || 0;
+        if (appliedPromoBadge) {
+          appliedPromoBadge.classList.remove('hidden');
+          appliedPromoBadge.classList.add('flex');
+          if (appliedPromoText) appliedPromoText.innerHTML = `<i class="fa-solid fa-tag mr-1.5"></i>${appliedPromo.code}: -$${discount.toFixed(2)} (${appliedPromo.name})`;
+        }
+        if (discountRow) {
+          discountRow.classList.remove('hidden');
+          discountRow.classList.add('flex');
+          if (discountElem) discountElem.textContent = `-$${discount.toFixed(2)}`;
+        }
+      } else {
+        if (appliedPromoBadge) appliedPromoBadge.classList.add('hidden');
+        if (discountRow) discountRow.classList.add('hidden');
+      }
+
+      const taxableAmount = Math.max(0, subtotal - discount);
+      const deliveryFee = subtotal >= threshold ? 0 : 4.99;
+      const tax = taxableAmount * 0.08875;
+      const total = taxableAmount + deliveryFee + tax;
+
+      if (subtotalElem) subtotalElem.textContent = `$${subtotal.toFixed(2)}`;
+      if (deliveryFeeElem) deliveryFeeElem.textContent = deliveryFee === 0 ? 'FREE' : `$${deliveryFee.toFixed(2)}`;
+      if (taxElem) taxElem.textContent = `$${tax.toFixed(2)}`;
+      if (totalElem) totalElem.textContent = `$${total.toFixed(2)}`;
+      if (checkoutTotalElem) checkoutTotalElem.textContent = `$${total.toFixed(2)}`;
+
+      // Render Items
+      if (itemsContainer) {
+        itemsContainer.innerHTML = cart.map(item => `
+          <div class="card-hearth p-3 flex items-center justify-between gap-3 text-xs font-outfit">
+            <div class="flex items-center gap-3 min-w-0">
+              <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover shrink-0 border border-amber-200/60" />
+              <div class="min-w-0">
+                <h4 class="font-bold text-stone-900 dark:text-white truncate">${item.name}</h4>
+                <div class="flex items-center gap-2 text-[11px] text-stone-500">
+                  <span class="text-amber-600 font-bold">$${item.price.toFixed(2)}</span>
+                  <span>&bull;</span>
+                  <span class="truncate">${item.category}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 shrink-0">
+              <div class="flex items-center border border-amber-300 dark:border-stone-700 rounded-xl overflow-hidden bg-white dark:bg-stone-900">
+                <button onclick="updateQuantity('${item.id}', -1)" class="w-6 h-6 flex items-center justify-center text-stone-600 hover:text-amber-600 hover:bg-amber-100 dark:hover:bg-amber-950/60 font-bold text-xs">&minus;</button>
+                <span class="w-6 text-center font-bold text-xs text-stone-900 dark:text-white">${item.qty}</span>
+                <button onclick="updateQuantity('${item.id}', 1)" class="w-6 h-6 flex items-center justify-center text-stone-600 hover:text-amber-600 hover:bg-amber-100 dark:hover:bg-amber-950/60 font-bold text-xs">&plus;</button>
+              </div>
+              <button onclick="removeFromCart('${item.id}')" class="text-stone-400 hover:text-red-500 transition-colors p-1" title="Remove">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function toggleCartDrawer() {
+      if (isCartOpen) {
+        closeCartDrawer();
+      } else {
+        openCartDrawer();
+      }
+    }
+
+    function openCartDrawer() {
+      isCartOpen = true;
+      if (cartDrawer && cartDrawerOverlay) {
+        cartDrawer.style.visibility = 'visible';
+        cartDrawer.classList.remove('invisible', 'pointer-events-none');
+        cartDrawerOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        cartDrawerOverlay.classList.add('opacity-100');
+        
+        setTimeout(() => {
+          cartDrawer.classList.remove('translate-x-full', 'rtl:-translate-x-full');
+          cartDrawer.classList.add('translate-x-0');
+        }, 10);
+      }
+      renderCart();
+    }
+
+    function closeCartDrawer() {
+      isCartOpen = false;
+      if (cartDrawer && cartDrawerOverlay) {
+        cartDrawer.classList.add('translate-x-full', 'rtl:-translate-x-full');
+        cartDrawer.classList.remove('translate-x-0');
+        cartDrawerOverlay.classList.add('opacity-0', 'pointer-events-none');
+        cartDrawerOverlay.classList.remove('opacity-100');
+
+        setTimeout(() => {
+          if (!isCartOpen) {
+            cartDrawer.style.visibility = 'hidden';
+            cartDrawer.classList.add('invisible', 'pointer-events-none');
+          }
+        }, 300);
+      }
+    }
+
+    function applyCartPromo() {
+      const input = document.getElementById('cartPromoInput');
+      if (!input) return;
+      const code = input.value.trim().toUpperCase();
+      if (!code) return;
+
+      if (code === 'DAWN13') {
+        appliedPromo = { code: 'DAWN13', discount: 4.00, name: 'Early Bird Dozen Deal' };
+      } else if (code === 'COMMUTE') {
+        appliedPromo = { code: 'COMMUTE', discount: 1.80, name: 'Daily Commuter Combo' };
+      } else if (code === 'BRUNCHBOX') {
+        appliedPromo = { code: 'BRUNCHBOX', discount: 7.50, name: 'Weekend Family Box' };
+      } else {
+        showToast('Invalid Code', 'Try DAWN13, COMMUTE, or BRUNCHBOX', 'images/favicon.svg');
+        return;
+      }
+
+      saveCart();
+      renderCart();
+      showToast('Promo Code Applied!', `${code}: -$${appliedPromo.discount.toFixed(2)} off your order`, 'images/favicon.svg');
+      input.value = '';
+    }
+
+    function removePromo() {
+      appliedPromo = null;
+      saveCart();
+      renderCart();
+    }
+
+    function claimVoucher(code, name, price, image) {
+      // Add the voucher item to cart
+      addToCart({
+        id: `voucher-${code.toLowerCase()}`,
+        name: name,
+        price: price,
+        image: image,
+        category: 'Daily Special Combo'
+      }, true);
+
+      // Auto-apply promo
+      if (code === 'DAWN13') {
+        appliedPromo = { code: 'DAWN13', discount: 4.00, name: 'Early Bird Dozen Deal' };
+      } else if (code === 'COMMUTE') {
+        appliedPromo = { code: 'COMMUTE', discount: 1.80, name: 'Daily Commuter Combo' };
+      } else if (code === 'BRUNCHBOX') {
+        appliedPromo = { code: 'BRUNCHBOX', discount: 7.50, name: 'Weekend Family Box' };
+      }
+      saveCart();
+      renderCart();
+      showToast('Voucher Claimed!', `${name} added with code ${code}!`, image);
+    }
+
+    // ----------------------------------------------------
+    // CHECKOUT & MODAL CONTROLS
+    // ----------------------------------------------------
+    function openCheckoutModal() {
+      closeCartDrawer();
+      if (checkoutModalBackdrop) {
+        checkoutModalBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+        checkoutModalBackdrop.classList.add('opacity-100');
+        const content = document.getElementById('checkoutModalContent');
+        if (content) {
+          content.classList.remove('scale-95');
+          content.classList.add('scale-100');
+        }
+      }
+    }
+
+    function closeCheckoutModal() {
+      if (checkoutModalBackdrop) {
+        checkoutModalBackdrop.classList.add('opacity-0', 'pointer-events-none');
+        checkoutModalBackdrop.classList.remove('opacity-100');
+        const content = document.getElementById('checkoutModalContent');
+        if (content) {
+          content.classList.add('scale-95');
+          content.classList.remove('scale-100');
+        }
+      }
+    }
+
+    function toggleFulfillmentMode(mode) {
+      const addressField = document.getElementById('deliveryAddressField');
+      if (addressField) {
+        if (mode === 'delivery') {
+          addressField.classList.remove('hidden');
+        } else {
+          addressField.classList.add('hidden');
+        }
+      }
+    }
+
+    function handleCheckoutSubmit(e) {
+      e.preventDefault();
+      closeCheckoutModal();
+
+      // Clear cart
+      cart = [];
+      appliedPromo = null;
+      saveCart();
+      renderCart();
+
+      // Set random order number
+      const orderNum = `#BK-${Math.floor(1000 + Math.random() * 9000)}`;
+      const orderNumElem = document.getElementById('confirmedOrderNum');
+      if (orderNumElem) orderNumElem.textContent = orderNum;
+
+      // Show confirmation
+      if (orderConfirmationModal) {
+        orderConfirmationModal.classList.remove('opacity-0', 'pointer-events-none');
+        orderConfirmationModal.classList.add('opacity-100');
+      }
+    }
+
+    function closeConfirmationModal() {
+      if (orderConfirmationModal) {
+        orderConfirmationModal.classList.add('opacity-0', 'pointer-events-none');
+        orderConfirmationModal.classList.remove('opacity-100');
+      }
+    }
+
+    // ----------------------------------------------------
+    // TOAST NOTIFICATIONS
+    // ----------------------------------------------------
+    let toastTimeout = null;
+    function showToast(title, subtitle, image) {
+      const toast = document.getElementById('toastNotification');
+      const tTitle = document.getElementById('toastTitle');
+      const tSubtitle = document.getElementById('toastSubtitle');
+      if (!toast) return;
+
+      if (tTitle) tTitle.textContent = title;
+      if (tSubtitle) tSubtitle.innerHTML = subtitle;
+
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCart();
+    });
+
+
+    function toggleHomeDropdown(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const dropdown = document.getElementById('desktopHomeDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('open');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('desktopHomeDropdown');
+      if (dropdown && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+
+</script>
 
 </body>
 </html>

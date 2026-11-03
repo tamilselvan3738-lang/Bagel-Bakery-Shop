@@ -67,13 +67,13 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip;
+      overflow-x: hidden !important;
       -webkit-text-size-adjust: 100%;
     }
 
     body {
       transition: background-color 0.3s ease, color 0.3s ease;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       width: 100% !important;
       margin: 0;
       padding: 0;
@@ -164,7 +164,9 @@
       position: absolute;
       top: 50%;
       left: 50%;
+      transform: translate(-50%, -50%) !important;
       width: 80%;
+      max-width: 100vw;
       height: 90%;
       background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.15) 45%, transparent 75%);
       filter: blur(36px);
@@ -329,11 +331,24 @@
     /* ==========================================================================
        HOME DROPDOWN MENU WITH PREVENTED TEXT-WRAP & PERFECT ALIGNMENT
        ========================================================================== */
-    .creative-dropdown {
+        .creative-dropdown {
       transform-origin: top center;
       transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
       min-width: 170px !important;
       width: 170px !important;
+    }
+    .group:hover .creative-dropdown,
+    .group.open .creative-dropdown,
+    #desktopHomeDropdown.open .creative-dropdown,
+    #desktopHomeDropdown.open #homeDropdownMenu {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateY(0) scale(1) !important;
+    }
+    #desktopHomeDropdown.open #homeChevron,
+    .group:hover #homeChevron {
+      transform: rotate(180deg);
     }
     [dir="rtl"] .creative-dropdown {
       text-align: right;
@@ -672,7 +687,7 @@
     html {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
     }
@@ -680,7 +695,7 @@
     body {
       width: 100% !important;
       max-width: 100% !important;
-      overflow-x: clip !important;
+      overflow-x: hidden !important;
       overflow-y: visible !important;
       position: relative;
       margin: 0;
@@ -690,13 +705,25 @@
       flex-direction: column;
     }
 
-    /* Strict Structural Containment (Excludes Header and Nav to guarantee Sticky & Dropdowns) */
-    main, section, footer, article, aside {
+    /* Strict Structural Containment */
+    main, footer, article {
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
-      overflow-x: clip !important;
       overflow-x: hidden !important;
+    }
+    section {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #mobileDrawer {
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease-out;
+    }
+    #mobileDrawer.translate-x-0 {
+      visibility: visible !important;
+      pointer-events: auto !important;
     }
 
     /* Images & Media Fluid Sizing: Max-Width 100% */
@@ -1027,19 +1054,17 @@
              Gallery, Visit Us, Contact
              ================================================================== -->
         <div id="navLinksContainer" class="hidden lg:flex items-center justify-center space-x-0.5 xl:space-x-1 rtl:space-x-reverse relative py-1 px-1">
-          
           <!-- Dynamic Framer Motion Gliding Pill -->
           <div id="navGlider"></div>
 
           <!-- 2.1 HOME (ON HOVER: ONLY SHOWS HOME 1 & HOME 2) -->
           <div class="relative group" id="desktopHomeDropdown">
-            <a href="index.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1 focus:outline-none" aria-haspopup="true">
+            <button type="button" onclick="toggleHomeDropdown(event)" class="nav-item-link  px-2.5 lg:px-2 xl:px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1 focus:outline-none cursor-pointer" aria-haspopup="true" aria-expanded="false">
               <span>Home</span>
-              <i class="fa-solid fa-chevron-down text-[8px] opacity-60 group-hover:rotate-180 transition-transform duration-200"></i>
-            </a>
+              <i id="homeChevron" class="fa-solid fa-chevron-down text-[8px] opacity-60 transition-transform duration-200"></i>
+            </button>
             
-            <!-- Shows ONLY Home 1 and Home 2 with Explicit Width & Guaranteed Single-Line Alignment -->
-            <div class="creative-dropdown absolute top-full left-0 rtl:left-auto rtl:right-0 mt-2.5 p-1.5 rounded-2xl bg-white/95 dark:bg-[#18100A]/95 backdrop-blur-2xl shadow-2xl border border-amber-200/80 dark:border-amber-900/60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div id="homeDropdownMenu" class="creative-dropdown absolute top-full left-0 rtl:left-auto rtl:right-0 mt-2 p-1.5 rounded-2xl bg-white/95 dark:bg-[#18100A]/95 backdrop-blur-2xl shadow-2xl border border-amber-200/80 dark:border-amber-900/60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']">
               <a href="index.html" class="dropdown-item flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-stone-800 dark:text-stone-100 hover:bg-amber-50 dark:hover:bg-amber-950/60 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
                 <span class="whitespace-nowrap font-outfit text-xs font-bold">Home 1</span>
                 <span class="w-2 h-2 rounded-full bg-stone-300 dark:bg-stone-700 shrink-0"></span>
@@ -1051,42 +1076,47 @@
             </div>
           </div>
 
-          <!-- 2.2 ABOUT -->
-          <a href="about.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
-            About
+          <!-- 2.2 DEDICATED SHOP -->
+          <a href="shop.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1">
+            <span>Shop</span>
+            <span class="px-1.5 py-0.2 rounded-full bg-amber-500 text-white text-[8px] font-black uppercase">Store</span>
           </a>
 
-          <!-- 2.3 MENU (WITH SUBTLE FRESH PULSE BADGE) -->
+          <!-- 2.3 DEDICATED MENU -->
           <a href="menu.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm flex items-center gap-1.5">
             <span>Menu</span>
             <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
           </a>
 
-          <!-- 2.4 CATERING (ONLY CATERING) -->
-          <a href="catering.html" class="nav-item-link active px-3 py-1.5 text-xs xl:text-sm">
-            Catering
+          <!-- 2.4 DEDICATED ABOUT -->
+          <a href="about.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
+            About
           </a>
 
-          <!-- 2.5 GALLERY -->
-          <a href="gallery.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
-            Gallery
-          </a>
-
-          <!-- 2.6 VISIT US -->
-          <a href="visit-us.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
-            Visit Us
-          </a>
-
-          <!-- 2.7 CONTACT -->
+          <!-- 2.5 DEDICATED CONTACT -->
           <a href="contact.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
             Contact
           </a>
 
+          <!-- 2.6 CATERING -->
+          <a href="catering.html" class="nav-item-link active px-3 py-1.5 text-xs xl:text-sm">
+            Catering
+          </a>
+
+          <!-- 2.7 GALLERY -->
+          <a href="gallery.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
+            Gallery
+          </a>
+
+          <!-- 2.8 VISIT US -->
+          <a href="visit-us.html" class="nav-item-link  px-3 py-1.5 text-xs xl:text-sm">
+            Visit Us
+          </a>
         </div>
 
-        <!-- ==================================================================
+                <!-- ==================================================================
              3. RIGHT (LAPTOP VIEW): REMAINING CONTROLS
-             Dark Mode Toggle, RTL Toggle, 3D Book Now Button (REDIRECTS TO CONTACT.HTML)
+             Dark Mode Toggle, RTL Toggle, Cart Button, 3D Book Now Button
              ================================================================== -->
         <div class="hidden lg:flex items-center space-x-1.5 xl:space-x-2 rtl:space-x-reverse shrink-0">
 
@@ -1096,11 +1126,17 @@
           </button>
 
           <!-- 3.2 RTL TOGGLE (3D SWITCH - ICON ONLY) -->
-          <button id="rtlToggleBtn" onclick="toggleRTL()" class="btn-3d btn-3d-switch w-8 h-8 rounded-full flex items-center justify-center text-xs" title="Toggle RTL / LTR" aria-label="Toggle RTL">
+          <button id="rtlToggleBtn" onclick="toggleRTL()" class="btn-3d btn-3d-switch w-8 h-8 rounded-full flex items-center justify-center text-xs" title="Toggle RTL Reading Direction" aria-label="Toggle RTL">
             <i id="rtlIcon" class="fa-solid fa-right-left text-[11px] text-amber-600"></i>
           </button>
 
-          <!-- 3.3 3D "BOOK NOW" BUTTON REDIRECTS TO CONTACT.HTML -->
+          <!-- 3.3 3D SHOPPING BAG / CART BUTTON -->
+          <button id="cartBtnDesktop" onclick="toggleCartDrawer()" class="btn-3d btn-3d-switch relative w-8 h-8 rounded-full flex items-center justify-center text-xs" title="View Bakery Cart" aria-label="Shopping Cart">
+            <i class="fa-solid fa-bag-shopping text-amber-600 dark:text-amber-400 text-xs"></i>
+            <span id="cartCountBadgeDesktop" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-600 text-white text-[9px] font-black font-outfit flex items-center justify-center shadow-sm">0</span>
+          </button>
+
+          <!-- 3.4 3D "BOOK NOW" BUTTON REDIRECTS TO CONTACT.HTML -->
           <a href="contact.html" id="desktopBookNowBtn" class="btn-3d btn-3d-bakery px-4 py-2 text-xs xl:text-sm rounded-full flex items-center gap-1.5 shadow-md" aria-label="Book Now">
             <i class="fa-solid fa-calendar-check text-[10px] text-amber-100"></i>
             <span class="font-outfit font-extrabold uppercase tracking-wide">Book Now</span>
@@ -1111,14 +1147,21 @@
         <!-- ==================================================================
              4. MOBILE & TABLET VIEW: HAMBURGER AT RIGHT (GUARANTEED VISIBLE)
              ================================================================== -->
-        <div class="flex items-center lg:hidden">
+        <!-- ==================================================================
+             4. MOBILE CONTROLS: CART BUTTON + HAMBURGER
+             ================================================================== -->
+        <div class="flex items-center lg:hidden gap-2">
+          <!-- 3D Mobile Shopping Bag Button -->
+          <button id="cartBtnMobile" onclick="toggleCartDrawer()" class="btn-3d btn-3d-switch relative w-8 h-8 rounded-full flex items-center justify-center text-xs" title="View Bakery Cart" aria-label="Shopping Cart">
+            <i class="fa-solid fa-bag-shopping text-amber-600 dark:text-amber-400 text-xs"></i>
+            <span id="cartCountBadgeMobile" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-600 text-white text-[9px] font-black font-outfit flex items-center justify-center shadow-sm">0</span>
+          </button>
+
           <!-- 3D Tactile Hamburger Menu Button -->
           <button id="hamburgerBtn" onclick="toggleMobileMenu()" class="btn-3d btn-3d-hamburger" aria-label="Navigation Menu" aria-expanded="false">
-            <div class="hamburger-icon-wrapper" id="hamburgerBars">
-              <span id="bar1" class="hamburger-bar"></span>
-              <span id="bar2" class="hamburger-bar"></span>
-              <span id="bar3" class="hamburger-bar"></span>
-            </div>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
           </button>
         </div>
 
@@ -1134,7 +1177,7 @@
        ======================================================================== -->
   <div id="mobileDrawerOverlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
-  <aside id="mobileDrawer" class="fixed top-0 right-0 rtl:right-auto rtl:left-0 w-72 max-w-[85vw] h-full bg-white dark:bg-bagel-warmCardDark border-l rtl:border-l-0 rtl:border-r border-amber-200/80 dark:border-amber-900/40 z-50 shadow-2xl flex flex-col transform translate-x-full rtl:-translate-x-full transition-transform duration-300 ease-out">
+  <aside id="mobileDrawer" class="invisible pointer-events-none fixed top-0 right-0 rtl:right-auto rtl:left-0 w-72 max-w-[85vw] h-full bg-white dark:bg-bagel-warmCardDark border-l rtl:border-l-0 rtl:border-r border-amber-200/80 dark:border-amber-900/40 z-50 shadow-2xl flex flex-col transform translate-x-full rtl:-translate-x-full transition-transform duration-300 ease-out">
     
     <!-- Drawer Header: Exact Navbar Logo Lockup & Close Button -->
     <div class="p-3.5 border-b border-amber-200/60 dark:border-amber-900/40 flex items-center justify-between">
@@ -1213,17 +1256,18 @@
     <div class="flex-1 overflow-y-auto p-3.5 space-y-3">
       
       <!-- Nav Items List -->
+      <!-- Nav Items List -->
       <div id="mobileItemsList" class="space-y-1">
         
         <!-- Home Accordion (ONLY Home 1 and Home 2) -->
-        <div class="drawer-anim-item rounded-xl border border-amber-200/80 dark:border-amber-900/40 overflow-hidden bg-amber-50/40 dark:bg-amber-950/20">
+        <div class="drawer-anim-item rounded-xl border border-amber-200/80 dark:border-amber-900/40 overflow-hidden bg-amber-50/50 dark:bg-amber-950/20">
           <div class="w-full flex items-center justify-between p-2.5 font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-100/50 dark:hover:bg-amber-900/30">
             <a href="index.html" onclick="toggleMobileMenu()" class="flex items-center gap-2 flex-1">
               <i class="fa-solid fa-store text-amber-500 text-[11px]"></i>
               <span>Home</span>
             </a>
             <button type="button" onclick="toggleAccordion('mobileHomeSubmenu', 'homeArrow')" class="p-1 focus:outline-none" aria-label="Toggle Home Submenu">
-              <i id="homeArrow" class="fa-solid fa-chevron-down text-[10px] text-amber-700 dark:text-amber-400 transition-transform duration-200 "></i>
+              <i id="homeArrow" class="fa-solid fa-chevron-down text-[10px] text-amber-700 dark:text-amber-400 transition-transform duration-200"></i>
             </button>
           </div>
           <!-- Submenu showing ONLY Home 1 and Home 2 -->
@@ -1237,64 +1281,50 @@
           </div>
         </div>
 
-        <!-- About -->
-        <a href="about.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-circle-info text-amber-600 text-[11px]"></i>
-          <span>About</span>
+        <!-- Dedicated Shop (Store) -->
+        <a href="shop.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-bag-shopping text-amber-600 text-[11px]"></i>
+          <span>Shop Bagels (Store)</span>
+          <span class="ml-auto px-1.5 py-0.2 rounded-full bg-amber-500 text-white text-[8px] font-black uppercase">Online Store</span>
         </a>
 
-        <!-- Menu -->
-        <a href="menu.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+        <!-- Dedicated Menu -->
+        <a href="menu.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
           <i class="fa-solid fa-utensils text-amber-500 text-[11px]"></i>
           <span>Menu</span>
         </a>
 
-        <!-- Catering (ONLY CATERING) -->
-        <a href="catering.html" onclick="toggleMobileMenu()" class="drawer-anim-item active active-drawer-link flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-box-open text-amber-600 text-[11px]"></i>
-          <span>Catering</span>
+        <!-- Dedicated About -->
+        <a href="about.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-book-open text-amber-500 text-[11px]"></i>
+          <span>About</span>
         </a>
 
-        <!-- Gallery -->
-        <a href="gallery.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-camera text-amber-500 text-[11px]"></i>
-          <span>Gallery</span>
-        </a>
-
-        <!-- Visit Us -->
-        <a href="visit-us.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
-          <i class="fa-solid fa-location-dot text-amber-600 text-[11px]"></i>
-          <span>Visit Us</span>
-        </a>
-
-        <!-- Contact -->
-        <a href="contact.html" onclick="toggleMobileMenu()" class="drawer-anim-item  flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-800 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+        <!-- Dedicated Contact -->
+        <a href="contact.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
           <i class="fa-solid fa-envelope text-amber-500 text-[11px]"></i>
           <span>Contact</span>
         </a>
 
+        <!-- Catering -->
+        <a href="catering.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs bg-amber-500/15 text-amber-700 dark:text-amber-300 font-black">
+          <i class="fa-solid fa-box-open text-amber-500 text-[11px]"></i>
+          <span>Catering</span>
+        </a>
+
+        <!-- Gallery -->
+        <a href="gallery.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-images text-amber-500 text-[11px]"></i>
+          <span>Gallery</span>
+        </a>
+
+        <!-- Visit Us -->
+        <a href="visit-us.html" onclick="toggleMobileMenu()" class="drawer-anim-item flex items-center gap-2 p-2.5 rounded-xl font-outfit font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-amber-950/40">
+          <i class="fa-solid fa-location-dot text-amber-500 text-[11px]"></i>
+          <span>Visit Us</span>
+        </a>
+
       </div>
-
-      <!-- Settings & Toggles inside Drawer (Dark Mode & RTL) -->
-      <div class="drawer-anim-item p-2.5 rounded-xl bg-amber-50/70 dark:bg-bagel-warmSurfaceDark border border-amber-200/80 dark:border-amber-900/40 space-y-2">
-        <div class="text-[9px] font-bold font-outfit text-stone-500 dark:text-stone-400 uppercase tracking-wider">
-          Preferences
-        </div>
-        
-        <div class="grid grid-cols-2 gap-2 grid-mobile-keep">
-          <!-- Dark/Light Toggle -->
-          <button onclick="toggleTheme()" class="btn-3d btn-3d-switch p-2 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold" title="Toggle Dark/Light">
-            <i class="fa-solid fa-sun text-amber-500 text-xs"></i>
-            <span id="mobileThemeLabel">Light</span>
-          </button>
-
-          <!-- RTL Toggle -->
-          <button onclick="toggleRTL()" class="btn-3d btn-3d-switch p-2 rounded-xl flex items-center justify-center text-xs font-bold" title="Toggle RTL">
-            <i class="fa-solid fa-right-left text-amber-600 text-xs"></i>
-          </button>
-        </div>
-      </div>
-
     </div>
 
     <!-- Drawer Footer: 3D "Book Now" Button (REDIRECTS TO CONTACT.HTML) -->
@@ -2862,8 +2892,12 @@
         mobileDrawerOverlay.classList.remove('opacity-0');
         mobileDrawerOverlay.classList.add('opacity-100');
 
-        mobileDrawer.classList.remove('translate-x-full', 'rtl:-translate-x-full');
-        mobileDrawer.classList.add('translate-x-0');
+        mobileDrawer.style.visibility = 'visible';
+        mobileDrawer.classList.remove('invisible', 'pointer-events-none');
+        setTimeout(() => {
+          mobileDrawer.classList.remove('translate-x-full', 'rtl:-translate-x-full');
+          mobileDrawer.classList.add('translate-x-0');
+        }, 10);
 
         if (window.Motion && window.Motion.animate) {
           const isCurrentRTL = htmlElem.getAttribute('dir') === 'rtl';
@@ -2889,6 +2923,12 @@
 
         mobileDrawer.classList.add('translate-x-full', 'rtl:-translate-x-full');
         mobileDrawer.classList.remove('translate-x-0');
+        setTimeout(() => {
+          if (!isMobileMenuOpen) {
+            mobileDrawer.style.visibility = 'hidden';
+            mobileDrawer.classList.add('invisible', 'pointer-events-none');
+          }
+        }, 300);
       }
     }
 
@@ -3102,7 +3142,26 @@
 
     // Hook into DOMContentLoaded for catering.html
     setTimeout(initCateringSectionAnimations, 200);
-  </script>
+  
+    function toggleHomeDropdown(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const dropdown = document.getElementById('desktopHomeDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('open');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('desktopHomeDropdown');
+      if (dropdown && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+
+</script>
 
 </body>
 </html>
